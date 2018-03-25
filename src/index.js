@@ -181,7 +181,7 @@ export default function ($) {
             collapse();
 
             // Expand the requested child node on click.
-            $columns.find(itemSelector).on('click', function (event) {
+            $columns.find(itemSelector).on('click', function (ev) {
                 const that = this;
                 const $this = $(that);
                 reset();
@@ -205,7 +205,7 @@ export default function ($) {
 
                 // Don't allow the underlying element
                 // to receive the click event.
-                event.stopPropagation();
+                ev.stopPropagation();
             });
 
             $columns.on('keydown', keypress);
