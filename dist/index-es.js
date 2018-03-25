@@ -163,11 +163,9 @@ function index ($) {
 
     $.fn.millerColumns = function (options) {
         const defaults = {
-            current: function ($item) {
-                return undefined;
-            },
-            breadcrumb: breadcrumb,
-            animation: animation,
+            current: $item => {},
+            breadcrumb,
+            animation,
             delay: 500
         };
 
@@ -179,7 +177,7 @@ function index ($) {
             collapse();
 
             // Expand the requested child node on click.
-            $columns.find(itemSelector).on('click', function (event) {
+            $columns.find(itemSelector).on('click', function (ev) {
                 const that = this;
                 const $this = $(that);
                 reset();
@@ -203,7 +201,7 @@ function index ($) {
 
                 // Don't allow the underlying element
                 // to receive the click event.
-                event.stopPropagation();
+                ev.stopPropagation();
             });
 
             $columns.on('keydown', keypress);

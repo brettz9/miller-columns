@@ -165,11 +165,9 @@ export default function ($) {
 
     $.fn.millerColumns = function (options) {
         const defaults = {
-            current: function ($item) {
-                return undefined;
-            },
-            breadcrumb: breadcrumb,
-            animation: animation,
+            current: ($item) => {},
+            breadcrumb,
+            animation,
             delay: 500
         };
 
