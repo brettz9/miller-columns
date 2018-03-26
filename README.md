@@ -5,6 +5,7 @@ ES6 Modules adaptation and expansion of
 
 ## Features
 
+- Works with semantically correct lists
 - Using up/down/right/left arrows for navigation
 - Using escape key for resetting to beginning
 - Auto-selection of first item if none chosen

@@ -12,7 +12,7 @@
 
     function index ($) {
         let settings;
-        const columnSelector = 'ul';
+        const columnSelector = 'ul:not(.no-columns),ol:not(.no-columns)';
         const itemSelector = 'li';
 
         /** Returns a list of the currently selected items. */

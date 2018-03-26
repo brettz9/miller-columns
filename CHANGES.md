@@ -1,5 +1,11 @@
 # miller-columns
 
+## ?
+
+- Breaking change: Allow use of `<ol>` (as well as `<ul>`).
+- Enhancement: Allow avoiding of `<ul>` (or `<ol>`) if a
+    `no-columns` class is applied.
+
 ## 0.2.2
 
 - Fix: Ensure reset scrolls back horizontally
