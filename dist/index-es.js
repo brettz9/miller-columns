@@ -80,6 +80,17 @@ function index ($) {
         return chain().last();
     }
 
+    function scrollIntoView($columns) {
+        $columns.stop().animate({
+            scrollLeft: 0
+        }, settings.delay);
+    }
+
+    function userReset($columns) {
+        reset($columns);
+        scrollIntoView($columns);
+    }
+
     /** Hide columns (not the first), remove selections, update breadcrumb. */
     function reset($columns) {
         collapse();
@@ -128,7 +139,7 @@ function index ($) {
             switch (ev.which) {
                 case 27:
                     // escape
-                    reset($columns);
+                    userReset($columns);
                     break;
                 case 38:
                     // arrow up
@@ -210,7 +221,7 @@ function index ($) {
             $columns.on('keydown', getKeyPress($columns));
             $columns.on('click', () => {
                 if (settings.resetOnOutsideClick) {
-                    reset($columns);
+                    userReset($columns);
                 }
             });
             // $('div.breadcrumb').on('click', moveL);

@@ -82,7 +82,6 @@ $('div.columns').millerColumns({
 
 ## To-dos
 
-1. Fix: Ensure reset scrolls back horizontally
 1. Better namespace CSS rules
 1. Use `loadStylesheets` to give option to load the CSS (along with other
     user-related styles) dynamically and modularly.

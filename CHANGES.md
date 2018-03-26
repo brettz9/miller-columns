@@ -1,5 +1,9 @@
 # miller-columns
 
+## 0.2.2
+
+- Fix: Ensure reset scrolls back horizontally
+
 ## 0.2.1
 
 - Breaking change: Rename UMD global from `MillerColumns` to
