@@ -44,7 +44,7 @@ ES6 Modules adaptation and expansion of
 <script src="main.js"></script>
 ```
 
-## Example
+## Example (ES6)
 
 ```js
 // Though on Roadmap for 3.4.0 (see https://github.com/jquery/jquery/wiki/Roadmap),
@@ -82,6 +82,7 @@ $('div.columns').millerColumns({
 
 ## To-dos
 
+1. Fix: Ensure reset scrolls back horizontally
 1. Better namespace CSS rules
 1. Use `loadStylesheets` to give option to load the CSS (along with other
     user-related styles) dynamically and modularly.

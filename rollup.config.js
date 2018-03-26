@@ -8,7 +8,7 @@ function getRollupObject ({minifying, format = 'umd'} = {}) {
         output: {
             format,
             file: `dist/index-${format}${minifying ? '.min' : ''}.js`,
-            name: 'MillerColumns'
+            name: 'addMillerColumnPlugin'
         },
         plugins: [
             babel()

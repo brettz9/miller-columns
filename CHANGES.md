@@ -1,5 +1,10 @@
 # miller-columns
 
+## 0.2.1
+
+- Breaking change: Rename UMD global from `MillerColumns` to
+    `addMillerColumnPlugin`. (No global needed for ES6)
+
 ## 0.2.0
 
 - Breaking change: Call `animation` with column first then columns for
