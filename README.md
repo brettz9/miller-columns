@@ -88,7 +88,7 @@ $('div.columns').millerColumns({
     user-related styles) dynamically and modularly.
 1. Support jumping alphabetically by typing of letter
 1. Support JSON (as with routine for converting internally to HTML)
-    1. Parse lazily from JSON (or HTML) data sources
+    1. Parse lazily from JSON (or HTML) data sources (using ES6 generator)
 1. Support `<dl>` parsing with `<dt>` as text that shows and `<dd>` as
     meta-data to show in where the Mac Finder would show its preview area
 1. Allow for Preview column for `<ul>`/`<ol>`
