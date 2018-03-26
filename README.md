@@ -101,9 +101,9 @@ been loaded.
 1. Better namespace CSS rules
 1. Support JSON (as with routine for converting internally to HTML)
     1. Parse lazily from JSON (or HTML) data sources (using ES6 generator)
+1. Allow for Preview column for `<ul>`/`<ol>`
 1. Support `<dl>` parsing with `<dt>` as text that shows and `<dd>` as
     meta-data to show in where the Mac Finder would show its preview area
-1. Allow for Preview column for `<ul>`/`<ol>`
 1. Editing
     1. Option to create
     1. Option to delete
