@@ -83,9 +83,7 @@ export default function ($) {
     }
 
     function scrollIntoView ($columns) {
-        $columns.stop().animate({
-            scrollLeft: 0
-        }, settings.delay);
+        animation(null, $columns);
     }
 
     function userReset ($columns) {
