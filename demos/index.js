@@ -4,7 +4,7 @@ import addMillerColumnPlugin from '../dist/index-es.js';
 addMillerColumnPlugin($);
 
 $('div.columns').millerColumns({
-    current ($item) {
+    current ($item, $cols) {
         console.log('User selected:', $item);
     }
 });

@@ -33,7 +33,7 @@
         }
 
         /** Ensure the viewport shows the entire newly expanded item. */
-        function animation($columns, $column) {
+        function animation($column, $columns) {
             let width = 0;
             chain().not($column).each(function () {
                 width += $(this).outerWidth(true);
@@ -87,13 +87,13 @@
         }
 
         /** Hide columns (not the first), remove selections, update breadcrumb. */
-        function reset() {
+        function reset($columns) {
             collapse();
             chain().removeClass('selected');
             breadcrumb();
 
             // Upon reset ensure no value is returned to the calling code.
-            settings.current(undefined);
+            settings.current(null, $columns);
         }
 
         /** Select item above current selection. */
@@ -126,45 +126,47 @@
             }
         }
 
-        function keypress(ev) {
-            // Was an attempt made to move the currently selected item (the cursor)?
-            let moved = false;
+        function getKeyPress($columns) {
+            return function keypress(ev) {
+                // Was an attempt made to move the currently selected item (the cursor)?
+                let moved = false;
 
-            switch (ev.which) {
-                case 27:
-                    // escape
-                    reset();
-                    break;
-                case 38:
-                    // arrow up
-                    moveU();
-                    moved = true;
-                    break;
-                case 40:
-                    // arrow down
-                    moveD();
-                    moved = true;
-                    break;
-                case 37:
-                    // arrow left
-                    moveL();
-                    moved = true;
-                    break;
-                case 39:
-                    // arrow right
-                    moveR();
-                    moved = true;
-                    break;
-            }
+                switch (ev.which) {
+                    case 27:
+                        // escape
+                        reset($columns);
+                        break;
+                    case 38:
+                        // arrow up
+                        moveU();
+                        moved = true;
+                        break;
+                    case 40:
+                        // arrow down
+                        moveD();
+                        moved = true;
+                        break;
+                    case 37:
+                        // arrow left
+                        moveL();
+                        moved = true;
+                        break;
+                    case 39:
+                        // arrow right
+                        moveR();
+                        moved = true;
+                        break;
+                }
 
-            // If no item is selected, then jump to the first item.
-            if (moved && current().length === 0) {
-                $('.column').first().children().first().click();
-            }
+                // If no item is selected, then jump to the first item.
+                if (moved && current().length === 0) {
+                    $('.column').first().children().first().click();
+                }
 
-            if (moved) {
-                ev.preventDefault();
-            }
+                if (moved) {
+                    ev.preventDefault();
+                }
+            };
         }
 
         $.fn.millerColumns = function (options) {
@@ -172,7 +174,8 @@
                 current: $item => {},
                 breadcrumb,
                 animation,
-                delay: 500
+                delay: 500,
+                resetOnOutsideClick: true
             };
 
             settings = $.extend(defaults, options);
@@ -186,7 +189,7 @@
                 $columns.find(itemSelector).on('click', function (ev) {
                     const that = this;
                     const $this = $(that);
-                    reset();
+                    reset($columns);
 
                     const $child = $this.data('child');
                     let $ancestor = $this;
@@ -201,17 +204,21 @@
                         $ancestor = $ancestor.data('ancestor');
                     }
 
-                    settings.animation.call(that, $columns, $this);
+                    settings.animation.call(that, $this, $columns);
                     settings.breadcrumb.call(that);
-                    settings.current.call(that, $this);
+                    settings.current.call(that, $this, $columns);
 
                     // Don't allow the underlying element
                     // to receive the click event.
                     ev.stopPropagation();
                 });
 
-                $columns.on('keydown', keypress);
-                $columns.on('click', reset);
+                $columns.on('keydown', getKeyPress($columns));
+                $columns.on('click', () => {
+                    if (settings.resetOnOutsideClick) {
+                        reset($columns);
+                    }
+                });
                 // $('div.breadcrumb').on('click', moveL);
 
                 // The last set of columns on the page recieves focus.

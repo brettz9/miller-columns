@@ -1,6 +1,21 @@
 # miller-columns
 
-ES6 Modules adaptation of <http://jsfiddle.net/yckart/cbtnemc7/>
+ES6 Modules adaptation and expansion of
+<http://jsfiddle.net/yckart/cbtnemc7/>
+
+## Features
+
+- Using up/down/right/left arrows for navigation
+- Using escape key for resetting to beginning
+- Auto-selection of first item if none chosen
+- Click listeners for navigation
+- Ability to register callback to be triggered with current selection
+    (or upon reset)
+- Default ability to display breadcrumbs (overridable)
+- Default ability for animation (or overridable), including setting the delay
+- Default ability to reset the column browser when clicking within the browser
+    area but not on a column
+- Available stylesheet for basic styling
 
 ## Installation
 
@@ -44,7 +59,7 @@ addMillerColumnPlugin($);
 
 $('div.columns').millerColumns({
     // Options:
-    current ($item) {
+    current ($item, $cols) {
         console.log('User selected:', $item);
     }
 });
@@ -54,15 +69,25 @@ $('div.columns').millerColumns({
 
 - `animation` - Optional callback for ensuring the viewport shows the
     entire newly expanded item. Defaults to an internal method. Passed the
-    columns and column jQuery objects as arguments.
+    column item and columns jQuery objects as arguments.
 - `breadcrumb` - Optional callback for adding the breadcrumb path using the
     chain of selected items. Defaults to an internal method. No arguments.
 - `current` - Optional callback for Defaults to a noop. Passed the
-    column item jQuery object (or `undefined` upon reset) as its single
-    argument.
+    column item and columns jQuery object as arguments. (Column item will be
+    `null` upon reset.)
 - `delay` - Optional integer indicating animation delay. Defaults to 500ms.
+- `resetOnOutsideClick` - Optional boolean to indicate whether to reset the
+    browser to the beginning upon clicking within the columns area where
+    it is not a column. Defaults to `true`.
 
 ## To-dos
 
+1. Better namespace CSS rules
 1. Use `loadStylesheets` to give option to load the CSS (along with other
     user-related styles) dynamically and modularly.
+1. Support jumping alphabetically by typing of letter
+1. Editing
+    1. Option to create
+    1. Option to delete
+    1. Option to rename (and trigger event) by clicking into cell
+    1. Option to move (by drag and drop and cut-paste key commands)
