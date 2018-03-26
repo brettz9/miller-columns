@@ -1,5 +1,9 @@
 # miller-columns
 
+## 0.3.1
+
+- Fix: Avoid adding special keys like modifiers to buffer
+
 ## 0.3.0
 
 - Enhancement: Support jumping (case-insensitively) alphabetically by typing

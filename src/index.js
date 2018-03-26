@@ -149,7 +149,6 @@ export default function ($) {
         }
         return function keypress (ev) {
             const {key} = ev;
-            checkLastPressed(key);
             // Was an attempt made to move the currently selected item (the cursor)?
             let moved = false;
 
@@ -174,7 +173,8 @@ export default function ($) {
                 moved = true;
                 break;
             default:
-                if ((/^\w/i).test(buffer)) {
+                if (key.length === 1) {
+                    checkLastPressed(key);
                     const matching = $columns.find(
                         'ul:not(.no-columns,.collapse),' +
                         'ol:not(.no-columns,.collapse) > li.selected'

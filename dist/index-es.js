@@ -147,7 +147,6 @@ function index ($) {
         }
         return function keypress(ev) {
             const { key } = ev;
-            checkLastPressed(key);
             // Was an attempt made to move the currently selected item (the cursor)?
             let moved = false;
 
@@ -172,7 +171,8 @@ function index ($) {
                     moved = true;
                     break;
                 default:
-                    if (/^\w/i.test(buffer)) {
+                    if (key.length === 1) {
+                        checkLastPressed(key);
                         const matching = $columns.find('ul:not(.no-columns,.collapse),' + 'ol:not(.no-columns,.collapse) > li.selected').last().parent().children().children( // Avoid child lists
                         '*:not(ul:not(.no-columns))').filter(function () {
                             return new RegExp('^' + escapeRegex(buffer), 'i').test($(this).text().trim());
