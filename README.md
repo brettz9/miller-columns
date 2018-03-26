@@ -5,7 +5,7 @@ ES6 Modules adaptation and expansion of
 
 ## Features
 
-- Works with semantically correct lists
+- Works with semantically correct `<ul>` (or `<ol>`) lists
 - Using up/down/right/left arrows for navigation
 - Using escape key for resetting to beginning
 - Auto-selection of first item if none chosen
@@ -88,6 +88,8 @@ $('div.columns').millerColumns({
     user-related styles) dynamically and modularly.
 1. Support jumping alphabetically by typing of letter
 1. Support JSON (as with routine for converting internally to HTML)
+1. Support `<dl>` parsing with `<dt>` as text that shows and `<dd>` as
+    meta-data to show in where the Mac Finder would show its preview area
 1. Editing
     1. Option to create
     1. Option to delete
