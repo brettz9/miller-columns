@@ -1,5 +1,10 @@
 # miller-columns
 
+## 0.3.0
+
+- Enhancement: Support jumping (case-insensitively) alphabetically by typing
+    letters (with a buffer to allow selection based on multiple characters)
+
 ## 0.2.3
 
 - Fix: Display quirk with unselected column still taking up space

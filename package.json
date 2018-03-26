@@ -1,14 +1,17 @@
 {
   "name": "miller-columns",
-  "version": "0.2.3",
+  "version": "0.3.0",
   "description": "Miller Columns in ES6 Modules JavaScript",
   "main": "src/index.js",
   "scripts": {
     "rollup": "rollup -c",
     "eslint": "eslint .",
+    "demo-no-open": "npm run eslint && npm run rollup && npm run start",
     "demo": "npm run eslint && npm run rollup && opn http://localhost:8092/demos/ && npm run start",
     "start": "static -p 8092",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "watch": "chokidar '**/*.js' -c 'pkill -f \".bin/static -p\" ; npm run demo-no-open' -i 'dist'",
+    "dontuse-unfinished-watch": "chokidar '**/*.js' -c 'pkill -f \".bin/static -p\" ; npm run eslint && npm run rollup && reload -b -d \"demos\"' -i 'dist'"
   },
   "repository": {
     "type": "git",
@@ -39,6 +42,7 @@
     "babel-plugin-external-helpers": "^6.22.0",
     "babel-polyfill": "^6.26.0",
     "babel-preset-env": "^1.6.1",
+    "chokidar-cli": "^1.2.0",
     "eslint": "4.19.1",
     "eslint-config-standard": "11.0.0",
     "eslint-plugin-import": "2.9.0",
@@ -48,6 +52,7 @@
     "jquery": "^3.3.1",
     "node-static": "0.7.10",
     "opn-cli": "^3.1.0",
+    "reload": "^2.2.2",
     "rollup": "0.57.1",
     "rollup-plugin-babel": "^3.0.3",
     "rollup-plugin-commonjs": "^9.1.0",

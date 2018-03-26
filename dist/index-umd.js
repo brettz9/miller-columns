@@ -10,6 +10,10 @@
      * Copyright 2014 White Magic Software, Inc.
      */
 
+    function escapeRegex(s) {
+        return s.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, '\\$&');
+    }
+
     function index ($) {
         let settings;
         const columnSelector = 'ul:not(.no-columns),ol:not(.no-columns)';
@@ -136,33 +140,51 @@
         }
 
         function getKeyPress($columns) {
+            let buffer = '';
+            let lastTime;
+            function checkLastPressed(key) {
+                const currTime = new Date();
+                if (!lastTime || currTime - lastTime < 500) {
+                    buffer += key;
+                } else {
+                    buffer = key;
+                }
+                lastTime = currTime;
+            }
             return function keypress(ev) {
+                const { key } = ev;
+                checkLastPressed(key);
                 // Was an attempt made to move the currently selected item (the cursor)?
                 let moved = false;
 
-                switch (ev.which) {
-                    case 27:
-                        // escape
+                switch (key) {
+                    case 'Escape':
                         userReset($columns);
                         break;
-                    case 38:
-                        // arrow up
+                    case 'ArrowUp':
                         moveU();
                         moved = true;
                         break;
-                    case 40:
-                        // arrow down
+                    case 'ArrowDown':
                         moveD();
                         moved = true;
                         break;
-                    case 37:
-                        // arrow left
+                    case 'ArrowLeft':
                         moveL();
                         moved = true;
                         break;
-                    case 39:
-                        // arrow right
+                    case 'ArrowRight':
                         moveR();
+                        moved = true;
+                        break;
+                    default:
+                        if (/^\w/i.test(buffer)) {
+                            const matching = $columns.find('ul:not(.no-columns,.collapse),' + 'ol:not(.no-columns,.collapse) > li.selected').last().parent().children().children( // Avoid child lists
+                            '*:not(ul:not(.no-columns))').filter(function () {
+                                return new RegExp('^' + escapeRegex(buffer), 'i').test($(this).text().trim());
+                            });
+                            matching.first().click();
+                        }
                         moved = true;
                         break;
                 }

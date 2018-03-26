@@ -86,7 +86,6 @@ $('div.columns').millerColumns({
 1. Better namespace CSS rules
 1. Use `loadStylesheets` to give option to load the CSS (along with other
     user-related styles) dynamically and modularly.
-1. Support jumping alphabetically by typing of letter
 1. Support JSON (as with routine for converting internally to HTML)
     1. Parse lazily from JSON (or HTML) data sources (using ES6 generator)
 1. Support `<dl>` parsing with `<dt>` as text that shows and `<dd>` as
