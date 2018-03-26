@@ -51,12 +51,13 @@ ES6 Modules adaptation and expansion of
 // Though on Roadmap for 3.4.0 (see https://github.com/jquery/jquery/wiki/Roadmap),
 //  jQuery doesn't have ES6 either as source or in a distribution, so you
 //  currently have to use Rollup with CommonJS plugins to get this next line
-//  working (or just add the script non-moduarly to HTML and use the global `$`)
+//  working (or just add the script non-modularly to HTML and use the global `$`)
 import $ from 'jquery';
 
 import addMillerColumnPlugin from '/node_modules/miller-columns/dist/index-es.min.js';
 
-addMillerColumnPlugin($);
+// The second options argument is optional
+await addMillerColumnPlugin($, {stylesheets: ['path/to/extra-stylesheet.css', '@default']});
 
 $('div.columns').millerColumns({
     // Options:
@@ -66,7 +67,21 @@ $('div.columns').millerColumns({
 });
 ```
 
-## Options
+## Constructor
+
+Returns a promise resolving when all supplied stylesheets (if any) have
+been loaded.
+
+- `$` - The instance of jQuery to which you are adding the plug-in.
+- `options`
+    - `stylesheets` - An optional array of stylesheet paths to be loaded in
+        parallel. Is meant for this plug-in, but you could include any
+        stylesheets to benefit from them loading together in parallel. Using
+        `@default` will provide (an attempt to) load the default stylesheet.
+        Due to current browser limitations, we can only guess the location of
+        our module URL.
+
+## Plugin options
 
 - `animation` - Optional callback for ensuring the viewport shows the
     entire newly expanded item. Defaults to an internal method. Passed the
@@ -84,8 +99,6 @@ $('div.columns').millerColumns({
 ## To-dos
 
 1. Better namespace CSS rules
-1. Use `loadStylesheets` to give option to load the CSS (along with other
-    user-related styles) dynamically and modularly.
 1. Support JSON (as with routine for converting internally to HTML)
     1. Parse lazily from JSON (or HTML) data sources (using ES6 generator)
 1. Support `<dl>` parsing with `<dt>` as text that shows and `<dd>` as

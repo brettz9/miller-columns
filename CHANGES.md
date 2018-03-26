@@ -1,5 +1,11 @@
 # miller-columns
 
+## 0.4.0
+
+- Enhancement: Use `loadStylesheets` to give option to load the CSS (along
+    with other user-related styles) dynamically and modularly (though in
+    parallel).
+
 ## 0.3.1
 
 - Fix: Avoid adding special keys like modifiers to buffer

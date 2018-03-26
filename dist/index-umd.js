@@ -4,20 +4,94 @@
     (global.addMillerColumnPlugin = factory());
 }(this, (function () { 'use strict';
 
+    function loadStylesheets(stylesheets, { before, after, favicon, canvas, image = true } = {}) {
+        stylesheets = Array.isArray(stylesheets) ? stylesheets : [stylesheets];
+
+        function setupLink(stylesheetURL) {
+            function addLink() {
+                if (before) {
+                    before.before(link);
+                } else if (after) {
+                    after.after(link);
+                } else {
+                    document.head.appendChild(link);
+                }
+            }
+
+            const link = document.createElement('link');
+            return new Promise((resolve, reject) => {
+                if (stylesheetURL.endsWith('.ico')) {
+                    favicon = true;
+                }
+                if (favicon) {
+                    link.rel = 'shortcut icon';
+                    link.type = 'image/x-icon';
+
+                    if (image === false) {
+                        link.href = stylesheetURL;
+                        addLink();
+                        resolve(link);
+                        return;
+                    }
+
+                    const cnv = document.createElement('canvas');
+                    cnv.width = 16;
+                    cnv.height = 16;
+                    const context = cnv.getContext('2d');
+                    const img = document.createElement('img');
+                    img.addEventListener('error', error => {
+                        reject(error);
+                    });
+                    img.addEventListener('load', () => {
+                        context.drawImage(img, 0, 0);
+                        link.href = canvas ? cnv.toDataURL('image/x-icon') : stylesheetURL;
+                        addLink();
+                        resolve(link);
+                    });
+                    img.src = stylesheetURL;
+                    return;
+                }
+                link.rel = 'stylesheet';
+                link.type = 'text/css';
+                link.href = stylesheetURL;
+                addLink();
+                link.addEventListener('error', error => {
+                    reject(error);
+                });
+                link.addEventListener('load', () => {
+                    resolve(link);
+                });
+            });
+        }
+
+        return Promise.all(stylesheets.map(setupLink));
+    }
+
     /**
      * MIT License
      *
      * Copyright 2014 White Magic Software, Inc.
      */
 
+    // Todo: Replace the `moduleURL` with `import.meta` `moduleURL` once
+    //  implemented; https://github.com/tc39/proposal-import-meta
+    const moduleURL = new URL('node_modules/miller-columns/src/index.js', location);
+
+    const defaultCSSURL = new URL('../miller-columns.css', moduleURL).href;
+
     function escapeRegex(s) {
         return s.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, '\\$&');
     }
 
-    function index ($) {
+    var index = (async function ($, { stylesheets = ['@default'] } = {}) {
         let settings;
         const columnSelector = 'ul:not(.no-columns),ol:not(.no-columns)';
         const itemSelector = 'li';
+        if (stylesheets) {
+            await loadStylesheets(stylesheets.map(s => {
+                return s === '@default' ? defaultCSSURL : s;
+            }));
+        }
 
         /** Returns a list of the currently selected items. */
         function chain() {
@@ -256,7 +330,7 @@
                 // $columns.focus();
             });
         };
-    }
+    });
 
     return index;
 

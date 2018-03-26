@@ -1,4 +1,5 @@
 import babel from 'rollup-plugin-babel';
+import nodeResolve from 'rollup-plugin-node-resolve';
 import uglify from 'rollup-plugin-uglify';
 import {minify} from 'uglify-es';
 
@@ -11,7 +12,7 @@ function getRollupObject ({minifying, format = 'umd'} = {}) {
             name: 'addMillerColumnPlugin'
         },
         plugins: [
-            babel()
+            babel(), nodeResolve()
         ]
     };
     if (minifying) {

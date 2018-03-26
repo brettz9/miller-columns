@@ -4,14 +4,27 @@
  * Copyright 2014 White Magic Software, Inc.
  */
 
+import loadStylesheets from 'load-stylesheets';
+
+// Todo: Replace the `moduleURL` with `import.meta` `moduleURL` once
+//  implemented; https://github.com/tc39/proposal-import-meta
+const moduleURL = new URL('node_modules/miller-columns/src/index.js', location);
+
+const defaultCSSURL = new URL('../miller-columns.css', moduleURL).href;
+
 function escapeRegex (s) {
     return s.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, '\\$&');
 }
 
-export default function ($) {
+export default async function ($, {stylesheets = ['@default']} = {}) {
     let settings;
     const columnSelector = 'ul:not(.no-columns),ol:not(.no-columns)';
     const itemSelector = 'li';
+    if (stylesheets) {
+        await loadStylesheets(stylesheets.map((s) => {
+            return s === '@default' ? defaultCSSURL : s;
+        }));
+    }
 
     /** Returns a list of the currently selected items. */
     function chain () {
