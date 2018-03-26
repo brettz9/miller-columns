@@ -1,7 +1,8 @@
 # miller-columns
 
-## ?
+## 0.2.3
 
+- Fix: Display quirk with unselected column still taking up space
 - Breaking change: Allow use of `<ol>` (as well as `<ul>`).
 - Enhancement: Allow avoiding of `<ul>` (or `<ol>`) if a
     `no-columns` class is applied.
