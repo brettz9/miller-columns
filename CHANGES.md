@@ -1,5 +1,14 @@
 # miller-columns
 
+## 0.5.0
+
+- Breaking change: Namespace all classes and jQuery's internal `data`
+    with `miller-`.
+- Breaking change: Switch from `breadcrumb` to `breadcrumbs` though
+    loosen need for this to be on a `<div>` and add a `breadcrumb`
+    class to the `<span>`'s representing individual breadcrumbs
+- Refactoring: Consistent CSS spacing
+
 ## 0.4.0
 
 - Enhancement: Use `loadStylesheets` to give option to load the CSS (along

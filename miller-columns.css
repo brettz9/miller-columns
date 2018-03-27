@@ -3,16 +3,16 @@
  * Cascading columns styling.
  *
  */
-.columns {
-    float: left;
-    width: 100%;
-    height: 100%;
-    overflow: auto;
-    white-space: nowrap;
+.miller-columns {
+  float: left;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  white-space: nowrap;
 }
 
 /* Display the lists as columns in blocks. */
-ul.column {
+ul.miller-column {
   display: inline-block;
 
   vertical-align: top;
@@ -27,32 +27,32 @@ ul.column {
 }
 
 /* Setting a list container class to "collapsed" will hide the column. */
-ul.column.collapse {
+ul.miller-column.miller-collapse {
   opacity: 0;
   display: none;
 }
 
 /* Put some space between the column's list entries. */
-ul.column > li {
+ul.miller-column > li {
   list-style: none;
   padding: 0.5em;
-    min-width: 10em;
+  min-width: 10em;
 }
 
-ul.column > li.parent:after {
+ul.miller-column > li.miller-parent:after {
   content: "›";
   font-weight: bold;
 }
 
 /* Highlight while hovering, without allowing selected items to override. */
-ul.column > li:hover {
+ul.miller-column > li:hover {
   color: black;
   background-color: #eee;
 }
 
 /* Ensure all selected nodes in the hierarchy are easily seen. */
-.column > .selected,
-.column > .selected:hover {
+.miller-column > .miller-selected,
+.miller-column > .miller-selected:hover {
   background-color: #08C;
   color: white;
 }
@@ -62,14 +62,14 @@ ul.column > li:hover {
  * Breadcrumb styling.
  *
  */
-.breadcrumb {
+.miller-breadcrumbs {
   border-bottom: 1px solid #eee;
 }
 
-.breadcrumb > *:after {
+.miller-breadcrumb:after {
   content: " › ";
 }
 
-.breadcrumb > *:last-child:after {
+.miller-breadcrumb:last-child:after {
   content: "";
 }

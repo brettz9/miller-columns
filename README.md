@@ -6,6 +6,7 @@ ES6 Modules adaptation and expansion of
 ## Features
 
 - Works with semantically correct `<ul>` (or `<ol>`) lists
+- Well-namespaced CSS classes and `data-*` attributes ("miller-" by default).
 - Using up/down/right/left arrows for navigation
 - Using escape key for resetting to beginning
 - Auto-selection of first item if none chosen
@@ -45,6 +46,31 @@ ES6 Modules adaptation and expansion of
 <script src="main.js"></script>
 ```
 
+## Expected HTML data format
+
+In order to take advantage of the default stylesheet, you should:
+
+1. Put the class `miller-columns` on the element on which you will invoke
+    our jQuery plug-in for adding Miller columns. The nestable `<ul>` or
+    `<ol>` lists you create (with `<li>` children) will be automatically
+    given the `miller-column` and possibly the `miller-collapse` class
+    and its `<li>` any of these classes: `miller-parent` or `miller-selected`.
+    If you do not wish one of the lists within `miller-columns` to be
+    treated as part of the Miller columns, give it a `miller-no-selected`
+    class.
+1. Add `miller-breadcrumbs` for whichever element you want to be the
+    container for breadcrumbs. Those individual breadcrumbs will be given
+    the `miller-breadcrumb` class and will be added automatically.
+
+Note that `miller-breadcrumbs` is the only class expected to be present by
+our JavaScript code, and that is only if you are not overriding the
+`breadcrumbs` option, and also if you have not changed the default
+`namespace` to something other than "miller".
+
+(Also as far as namespacing, the library uses jQuery's `.data()` with
+`miller-ancestor` and `miller-child` (which can also be altered by the
+`namespace` option), but these are stored internally by jQuery).)
+
 ## Example (ES6)
 
 ```js
@@ -59,7 +85,7 @@ import addMillerColumnPlugin from '/node_modules/miller-columns/dist/index-es.mi
 // The second options argument is optional
 await addMillerColumnPlugin($, {stylesheets: ['path/to/extra-stylesheet.css', '@default']});
 
-$('div.columns').millerColumns({
+$('div.miller-columns').millerColumns({
     // Options:
     current ($item, $cols) {
         console.log('User selected:', $item);
@@ -80,6 +106,9 @@ been loaded.
         `@default` will provide (an attempt to) load the default stylesheet.
         Due to current browser limitations, we can only guess the location of
         our module URL.
+    - `namespace` - Defaults to `miller`. The default must be kept if one
+        wishes to use the provided `miller-columns.css` stylesheet without
+        modification.
 
 ## Plugin options
 
@@ -98,10 +127,10 @@ been loaded.
 
 ## To-dos
 
-1. Better namespace CSS rules
 1. Support JSON (as with routine for converting internally to HTML)
     1. Parse lazily from JSON (or HTML) data sources (using ES6 generator)
 1. Allow for Preview column for `<ul>`/`<ol>`
+1. Any way to avoid restructuring of DOM for sake of accessibility?
 1. Support `<dl>` parsing with `<dt>` as text that shows and `<dd>` as
     meta-data to show in where the Mac Finder would show its preview area
 1. Editing

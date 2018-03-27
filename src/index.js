@@ -2,6 +2,7 @@
  * MIT License
  *
  * Copyright 2014 White Magic Software, Inc.
+ * Copyright 2018 Brett Zamir
  */
 
 import loadStylesheets from 'load-stylesheets';
@@ -16,9 +17,9 @@ function escapeRegex (s) {
     return s.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, '\\$&');
 }
 
-export default async function ($, {stylesheets = ['@default']} = {}) {
+export default async function ($, {namespace = 'miller', stylesheets = ['@default']} = {}) {
     let settings;
-    const columnSelector = 'ul:not(.no-columns),ol:not(.no-columns)';
+    const columnSelector = `ul:not(.${namespace}-no-columns),ol:not(.${namespace}-no-columns)`;
     const itemSelector = 'li';
     if (stylesheets) {
         await loadStylesheets(stylesheets.map((s) => {
@@ -28,16 +29,16 @@ export default async function ($, {stylesheets = ['@default']} = {}) {
 
     /** Returns a list of the currently selected items. */
     function chain () {
-        return $('.column > .selected');
+        return $(`.${namespace}-column > .${namespace}-selected`);
     }
 
     /** Add the breadcrumb path using the chain of selected items. */
     function breadcrumb () {
-        const $breadcrumb = $('div.breadcrumb').empty();
+        const $breadcrumb = $(`.${namespace}-breadcrumbs`).empty();
 
         chain().each(function () {
             const $crumb = $(this);
-            $('<span>')
+            $(`<span class="${namespace}-breadcrumb">`)
                 .text($crumb.text().trim())
                 .click(function () {
                     $crumb.click();
@@ -73,25 +74,25 @@ export default async function ($, {stylesheets = ['@default']} = {}) {
                     $ancestor = $this.parent().parent();
 
                 // Retain item hierarchy (because it is lost after flattening).
-                if ($ancestor.length && ($this.data('ancestor') == null)) {
+                if ($ancestor.length && ($this.data(`${namespace}-ancestor`) == null)) {
                     // Use addBack to reset all selection chains.
-                    $(this).siblings().addBack().data('ancestor', $ancestor);
+                    $(this).siblings().addBack().data(`${namespace}-ancestor`, $ancestor);
                 }
 
                 if ($child.length) {
                     queue.push($child);
-                    $(this).data('child', $child).addClass('parent');
+                    $(this).data(`${namespace}-child`, $child).addClass(`${namespace}-parent`);
                 }
 
                 // Causes item siblings to have a flattened DOM lineage.
-                $(this).parent(columnSelector).appendTo($columns).addClass('column');
+                $(this).parent(columnSelector).appendTo($columns).addClass(`${namespace}-column`);
             });
         }
     }
 
     /** Hide columns (not the first). */
     function collapse () {
-        $('.column:gt(0)').addClass('collapse');
+        $(`.${namespace}-column:gt(0)`).addClass(`${namespace}-collapse`);
     }
 
     /** Returns the last selected item (i.e., the current cursor). */
@@ -111,7 +112,7 @@ export default async function ($, {stylesheets = ['@default']} = {}) {
     /** Hide columns (not the first), remove selections, update breadcrumb. */
     function reset ($columns) {
         collapse();
-        chain().removeClass('selected');
+        chain().removeClass(`${namespace}-selected`);
         breadcrumb();
 
         // Upon reset ensure no value is returned to the calling code.
@@ -130,7 +131,7 @@ export default async function ($, {stylesheets = ['@default']} = {}) {
 
     /** Select item left of the current selection. */
     function moveL () {
-        const $ancestor = current().data('ancestor');
+        const $ancestor = current().data(`${namespace}-ancestor`);
 
         if ($ancestor) {
             $ancestor.click();
@@ -139,7 +140,7 @@ export default async function ($, {stylesheets = ['@default']} = {}) {
 
     /** Select item right of the current selection, or down if no right item. */
     function moveR () {
-        const $child = current().data('child');
+        const $child = current().data(`${namespace}-child`);
 
         if ($child) {
             $child.children(itemSelector).first().click();
@@ -189,10 +190,10 @@ export default async function ($, {stylesheets = ['@default']} = {}) {
                 if (key.length === 1) {
                     checkLastPressed(key);
                     const matching = $columns.find(
-                        'ul:not(.no-columns,.collapse),' +
-                        'ol:not(.no-columns,.collapse) > li.selected'
+                        `ul:not(.${namespace}-no-columns,.${namespace}-collapse),
+                        ol:not(.${namespace}-no-columns,.${namespace}-collapse) > li.${namespace}-selected`
                     ).last().parent().children().children( // Avoid child lists
-                        '*:not(ul:not(.no-columns))'
+                        `*:not(ul:not(.${namespace}-no-columns))`
                     ).filter(function () {
                         return new RegExp(
                             '^' + escapeRegex(buffer),
@@ -207,7 +208,7 @@ export default async function ($, {stylesheets = ['@default']} = {}) {
 
             // If no item is selected, then jump to the first item.
             if (moved && (current().length === 0)) {
-                $('.column').first().children().first().click();
+                $(`.${namespace}-column`).first().children().first().click();
             }
 
             if (moved) {
@@ -238,17 +239,17 @@ export default async function ($, {stylesheets = ['@default']} = {}) {
                 const $this = $(that);
                 reset($columns);
 
-                const $child = $this.data('child');
+                const $child = $this.data(`${namespace}-child`);
                 let $ancestor = $this;
 
                 if ($child) {
-                    $child.removeClass('collapse').children().removeClass('selected');
+                    $child.removeClass(`${namespace}-collapse`).children().removeClass(`${namespace}-selected`);
                 }
 
                 // Reveal (uncollapse) all ancestors to the clicked item.
                 while ($ancestor) {
-                    $ancestor.addClass('selected').parent().removeClass('collapse');
-                    $ancestor = $ancestor.data('ancestor');
+                    $ancestor.addClass(`${namespace}-selected`).parent().removeClass(`${namespace}-collapse`);
+                    $ancestor = $ancestor.data(`${namespace}-ancestor`);
                 }
 
                 settings.animation.call(that, $this, $columns);
@@ -266,9 +267,8 @@ export default async function ($, {stylesheets = ['@default']} = {}) {
                     userReset($columns);
                 }
             });
-            // $('div.breadcrumb').on('click', moveL);
 
-            // The last set of columns on the page recieves focus.
+            // The last set of columns on the page receives focus.
             // $columns.focus();
         });
     };
