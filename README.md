@@ -28,8 +28,6 @@ ES6 Modules adaptation and expansion of
 ### ES6 Module-supporting browsers
 
 ```html
-<!-- See the to-do on how this stylesheet might not be needed here later -->
-<link rel="stylesheet" href="node_modules/miller-columns/miller-columns.css" />
 <!-- See comment in JavaScript example on current need for this here-->
 <script src="node_modules/jquery/dist/jquery.js"></script>
 <!-- Let your main.js do the imports as in the example below -->
@@ -39,8 +37,6 @@ ES6 Modules adaptation and expansion of
 ### Older browsers
 
 ```html
-<!-- See the to-do on how this stylesheet might not be needed here later -->
-<link rel="stylesheet" href="node_modules/miller-columns/miller-columns.css" />
 <script src="node_modules/jquery/dist/jquery.js"></script>
 <script src="node_modules/miller-columns/dist/index-umd.js"></script>
 <script src="main.js"></script>
