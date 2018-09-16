@@ -189,16 +189,8 @@ export default async function ($, {namespace = 'miller', stylesheets = ['@defaul
             default:
                 if (key.length === 1) {
                     checkLastPressed(key);
-                    const matching = $columns.find(
-                        `ul:not(.${namespace}-no-columns,.${namespace}-collapse),
-                        ol:not(.${namespace}-no-columns,.${namespace}-collapse) > li.${namespace}-selected`
-                    ).last().parent().children().children( // Avoid child lists
-                        `*:not(ul:not(.${namespace}-no-columns))`
-                    ).filter(function () {
-                        return new RegExp(
-                            '^' + escapeRegex(buffer),
-                            'i'
-                        ).test($(this).text().trim());
+                    const matching = $columns.find(`li.${namespace}-selected`).last().siblings().filter(function () {
+                        return new RegExp('^' + escapeRegex(buffer), 'i').test($(this).text().trim());
                     });
                     matching.first().click();
                 }
