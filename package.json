@@ -1,6 +1,6 @@
 {
   "name": "miller-columns",
-  "version": "0.5.0",
+  "version": "0.6.0",
   "description": "Miller Columns in ES6 Modules JavaScript",
   "main": "src/index.js",
   "scripts": {
@@ -9,7 +9,7 @@
     "demo-no-open": "pkill -f \".bin/static -p\" ; npm run eslint && npm run rollup && npm run start",
     "demo": "npm run eslint && npm run rollup && opn http://localhost:8092/demos/ && npm run start",
     "start": "static -p 8092",
-    "test": "testcafe chrome tests/**/*.js",
+    "test": "npm run eslint && npm run rollup && testcafe chrome tests/**/*.js",
     "watch": "chokidar '**/*.js' -c 'npm run demo-no-open' -i 'dist' -i 'node_modules' & npm run demo-no-open",
     "dontuse-unfinished-watch": "chokidar '**/*.js' -c 'pkill -f \".bin/static -p\" ; npm run eslint && npm run rollup && reload -b -d \"demos\"' -i 'dist'"
   },

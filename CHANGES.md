@@ -1,5 +1,16 @@
 # miller-columns
 
+## 0.6.0
+
+- Breaking change: Remove `yarn.lock`
+- Fix (and simplify) key selection (had been selecting items in
+    non-highlighted columns)
+- npm: Update devDeps; remove unused
+- Linting (ESLint): "Standard" update; testcafe
+- Build: Update to terser for current minification support
+- Testing: Add testcafe skeleton for UI (and accessibility) testing
+- Docs: Remove outdated info
+
 ## 0.5.0
 
 - Breaking change: Namespace all classes and jQuery's internal `data`
