@@ -123,6 +123,7 @@ been loaded.
 
 ## To-dos
 
+1. Fix key command--it selects within other columns
 1. Any way to avoid restructuring of DOM for sake of accessibility?
 1. Support JSON (as with routine for converting internally to HTML)
     1. Parse lazily from JSON (or HTML) data sources (using ES6 generator)
