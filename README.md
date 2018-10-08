@@ -113,9 +113,15 @@ been loaded.
     column item and columns jQuery objects as arguments.
 - `breadcrumb` - Optional callback for adding the breadcrumb path using the
     chain of selected items. Defaults to an internal method. No arguments.
-- `current` - Optional callback for Defaults to a noop. Passed the
-    column item and columns jQuery object as arguments. (Column item will be
-    `null` upon reset.)
+- `current` - Optional callback; defaults to a noop. Called upon selection.
+    Passed the column item and columns jQuery object as arguments.
+- `reset` - Optional callback; defaults to a noop. Called upon reset (by
+    user hitting escape key or any time clicking an element). Passed the
+    columns jQuery object as argument
+- `preview` - Optional callback; defaults to a noop. Passed the column
+    item and columns jQuery object as arguments. The return result should be
+    an HTML string which is used to fill the list item which functions as the
+    preview pane when selected a final item (an item without children).
 - `delay` - Optional integer indicating animation delay. Defaults to 500ms.
 - `resetOnOutsideClick` - Optional boolean to indicate whether to reset the
     browser to the beginning upon clicking within the columns area where

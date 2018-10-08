@@ -204,7 +204,10 @@
             breadcrumb();
 
             // Upon reset ensure no value is returned to the calling code.
-            settings.current(null, $columns);
+            settings.reset($columns);
+            if (settings.preview) {
+                $(`.${namespace}-preview`).remove();
+            }
         }
 
         /** Select item above current selection. */
@@ -277,7 +280,7 @@
                     default:
                         if (key.length === 1) {
                             checkLastPressed(key);
-                            const matching = $columns.find(`li.${namespace}-selected`).last().siblings().filter(function () {
+                            const matching = $columns.find(`${itemSelector}.${namespace}-selected`).last().siblings().filter(function () {
                                 return new RegExp('^' + escapeRegex(buffer), 'i').test($(this).text().trim());
                             });
                             matching.first().click();
@@ -300,6 +303,8 @@
         $.fn.millerColumns = function (options) {
             const defaults = {
                 current: $item => {},
+                reset: $columns => {},
+                preview: $item => {},
                 breadcrumb,
                 animation,
                 delay: 500,
@@ -315,8 +320,7 @@
 
                 // Expand the requested child node on click.
                 $columns.find(itemSelector).on('click', function (ev) {
-                    const that = this;
-                    const $this = $(that);
+                    const $this = $(this);
                     reset($columns);
 
                     const $child = $this.data(`${namespace}-child`);
@@ -332,9 +336,19 @@
                         $ancestor = $ancestor.data(`${namespace}-ancestor`);
                     }
 
-                    settings.animation.call(that, $this, $columns);
-                    settings.breadcrumb.call(that);
-                    settings.current.call(that, $this, $columns);
+                    settings.animation.call(this, $this, $columns);
+                    settings.breadcrumb.call(this);
+                    settings.current.call(this, $this, $columns);
+
+                    if (settings.preview) {
+                        const isFinalCol = $this.hasClass(`${namespace}-selected`) && !$this.hasClass(`${namespace}-parent`);
+                        if (isFinalCol) {
+                            const content = settings.preview.call(this, $this, $columns);
+                            $this.parent().parent().append(`<ul class="${namespace}-column ${namespace}-preview">
+                                <li>${content}</li>
+                            </ul>`);
+                        }
+                    }
 
                     // Don't allow the underlying element
                     // to receive the click event.

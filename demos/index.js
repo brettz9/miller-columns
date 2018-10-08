@@ -7,6 +7,12 @@ await addMillerColumnPlugin($, {stylesheets: ['../miller-columns.css']});
 $('div.miller-columns').millerColumns({
     current ($item, $cols) {
         console.log('User selected:', $item);
+    },
+    reset ($cols) {
+        console.log('Reset called');
+    },
+    preview ($item) {
+        return 'Preview: ' + $item.text();
     }
 });
 })();

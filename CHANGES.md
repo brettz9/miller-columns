@@ -1,5 +1,13 @@
 # miller-columns
 
+## 0.7.0
+
+- Breaking change: Dropped reporting of resets to `current` settings handler
+    and instead report to a new `reset` settings handler (which takes a single
+    argument only of the columns object).
+- Enhancement: Add `preview` setting callback to allow shaping of a preview
+    pane
+
 ## 0.6.0
 
 - Breaking change: Remove `yarn.lock`
