@@ -118,7 +118,7 @@ been loaded.
 - `reset` - Optional callback; defaults to a noop. Called upon reset (by
     user hitting escape key or any time clicking an element). Passed the
     columns jQuery object as argument
-- `preview` - Optional callback; defaults to a noop. Passed the column
+- `preview` - Optional callback; defaults to `null`. Passed the column
     item and columns jQuery object as arguments. The return result should be
     an HTML string which is used to fill the list item which functions as the
     preview pane when selected a final item (an item without children).
@@ -129,6 +129,8 @@ been loaded.
 
 ## To-dos
 
+1. Stop jolting when switching between those with preview panes at same
+    level and which are already scrolled (new `scrollIntoView` code?)
 1. Any way to avoid restructuring of DOM for sake of accessibility?
 1. Support JSON (as with routine for converting internally to HTML)
     1. Parse lazily from JSON (or HTML) data sources (using ES6 generator)

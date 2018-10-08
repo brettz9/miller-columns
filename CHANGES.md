@@ -5,8 +5,10 @@
 - Breaking change: Dropped reporting of resets to `current` settings handler
     and instead report to a new `reset` settings handler (which takes a single
     argument only of the columns object).
+- Fix: Ensure scrolling to furthermost column
 - Enhancement: Add `preview` setting callback to allow shaping of a preview
     pane
+- Enhancement: Add `scroll` setting callback to be informed of scrolling
 
 ## 0.6.0
 

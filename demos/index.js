@@ -13,6 +13,9 @@ $('div.miller-columns').millerColumns({
     },
     preview ($item) {
         return 'Preview: ' + $item.text();
+    },
+    scroll ($item, $cols) {
+        console.log('Scrolling...');
     }
 });
 })();

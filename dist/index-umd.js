@@ -142,7 +142,14 @@
             });
             $columns.stop().animate({
                 scrollLeft: width
-            }, settings.delay);
+            }, settings.delay, function () {
+                const last = $columns.find(`.${namespace}-column:not(.${namespace}-collapse)`).last();
+                // last[0].scrollIntoView(); // Scrolls vertically also unfortunately
+                last[0].scrollLeft = width;
+                if (settings.scroll) {
+                    settings.scroll.call(this, $column, $columns);
+                }
+            });
         }
 
         /** Convert nested lists into columns using breadth-first traversal. */
@@ -304,7 +311,7 @@
             const defaults = {
                 current: $item => {},
                 reset: $columns => {},
-                preview: $item => {},
+                preview: null,
                 breadcrumb,
                 animation,
                 delay: 500,
