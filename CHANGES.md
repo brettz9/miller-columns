@@ -1,5 +1,9 @@
 # miller-columns
 
+## 0.8.1
+
+- npm: Include `package-lock.json` updates
+
 ## 0.8.0
 
 - Linting (ESLint): Add a recommended extension (js); lint MD and HTML; apply ash-nazg
