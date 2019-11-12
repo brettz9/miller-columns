@@ -76,17 +76,19 @@ our JavaScript code, and that is only if you are not overriding the
 //  working (or just add the script non-modularly to HTML and use the global `$`)
 import $ from 'jquery';
 
-import addMillerColumnPlugin from '/node_modules/miller-columns/dist/index-es.min.js';
+import addMillerColumnPlugin from './node_modules/miller-columns/dist/index-es.min.js';
 
+(async () => {
 // The second options argument is optional
 await addMillerColumnPlugin($, {stylesheets: ['path/to/extra-stylesheet.css', '@default']});
 
 $('div.miller-columns').millerColumns({
-    // Options:
-    current ($item, $cols) {
-        console.log('User selected:', $item);
-    }
+  // Options:
+  current ($item, $cols) {
+    console.log('User selected:', $item);
+  }
 });
+})();
 ```
 
 ## Constructor

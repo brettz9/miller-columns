@@ -1,5 +1,12 @@
 # miller-columns
 
+## 0.8.0
+
+- Linting (ESLint): Add a recommended extension (js); lint MD and HTML; apply ash-nazg
+- Maintenance: Add `.editorconfig`
+- Testing: Update Axe API (though now failing)
+- npm: Update opn-cli->open-cli, devDeps
+
 ## 0.7.0
 
 - Breaking change: Dropped reporting of resets to `current` settings handler
