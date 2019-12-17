@@ -2,6 +2,7 @@
 
 ## ?
 
+- npm: Switch to non-deprecated `@rollup/plugin-node-resolve`
 - npm: Update devDeps
 
 ## 0.8.1
