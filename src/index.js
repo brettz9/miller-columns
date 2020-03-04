@@ -1,8 +1,8 @@
 /**
- * MIT License
+ * MIT License.
  *
- * Copyright 2014 White Magic Software, Inc.
- * Copyright 2018 Brett Zamir
+ * @copyright 2014 White Magic Software, Inc.
+ * @copyright 2018 Brett Zamir
  */
 
 import loadStylesheets from 'load-stylesheets';

@@ -105,10 +105,10 @@ function loadStylesheets(stylesheets, {
 }
 
 /**
- * MIT License
+ * MIT License.
  *
- * Copyright 2014 White Magic Software, Inc.
- * Copyright 2018 Brett Zamir
+ * @copyright 2014 White Magic Software, Inc.
+ * @copyright 2018 Brett Zamir
  */
 //  implemented; https://github.com/tc39/proposal-import-meta
 
