@@ -2,8 +2,11 @@
 
 ## ?
 
-- Linting (ESLint): Per latest ash-nazg
+- Linting (ESLint): Per latest ash-nazg / ESLint 7
+- npm: Make separate test script for "testcafe"
 - npm: Switch to non-deprecated `@rollup/plugin-node-resolve`
+- npm: Update `rollup-plugin-babel` to `@rollup/plugin-babel`
+    and make explicit `babelHelpers` value of `bundled`
 - npm: Update devDeps
 
 ## 0.8.1

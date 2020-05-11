@@ -27,6 +27,9 @@ function escapeRegex (s) {
 
 /**
  * @param {external:jQuery} $
+ * @param {PlainObject} cfg
+ * @param {string} cfg.namespace
+ * @param {string[]} cfg.stylesheets
  * @returns {external:jQuery}
  */
 async function addMillerColumnPlugin ($, {namespace = 'miller', stylesheets = ['@default']} = {}) {
@@ -80,6 +83,7 @@ async function addMillerColumnPlugin ($, {namespace = 'miller', stylesheets = ['
       scrollLeft: width
     }, settings.delay, function () {
       // Why isn't this working when we instead use this `last` on the `animate` above?
+      // eslint-disable-next-line unicorn/no-fn-reference-in-iterator
       const last = $columns.find(`.${namespace}-column:not(.${namespace}-collapse)`).last();
       // last[0].scrollIntoView(); // Scrolls vertically also unfortunately
       last[0].scrollLeft = width;
@@ -275,6 +279,7 @@ async function addMillerColumnPlugin ($, {namespace = 'miller', stylesheets = ['
       default:
         if (key.length === 1) {
           checkLastPressed(key);
+          // eslint-disable-next-line unicorn/no-fn-reference-in-iterator
           const matching = $columns.find(`${itemSelector}.${namespace}-selected`).last().siblings().filter(function () {
             return new RegExp('^' + escapeRegex(buffer), 'i').test($(this).text().trim());
           });

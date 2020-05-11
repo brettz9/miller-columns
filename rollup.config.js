@@ -1,4 +1,4 @@
-import babel from 'rollup-plugin-babel';
+import babel from '@rollup/plugin-babel';
 import nodeResolve from '@rollup/plugin-node-resolve';
 import {terser} from 'rollup-plugin-terser';
 
@@ -23,7 +23,9 @@ function getRollupObject ({minifying, format = 'umd'} = {}) {
       name: 'addMillerColumnPlugin'
     },
     plugins: [
-      babel(), nodeResolve()
+      babel({
+        babelHelpers: 'bundled'
+      }), nodeResolve()
     ]
   };
   if (minifying) {
