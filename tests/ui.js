@@ -9,5 +9,5 @@ fixture`TestCafe UI tests`
 // Todo: Replace with something meaningful
 test('Shows children', async (t) => {
   await t
-    .expect(Selector('body')).ok('Has body');
+    .expect(Selector('body').exists).ok('Has body');
 });

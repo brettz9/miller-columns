@@ -2,9 +2,13 @@
 
 ## ?
 
+- Build: As per latest devDeps/linting
 - Linting (ESLint): Per latest ash-nazg / ESLint 7
+- Linting (Remark): Remove `remarkrc`
+- Testing: Update testcafe API
 - npm: Make separate test script for "testcafe"
 - npm: Switch to non-deprecated `@rollup/plugin-node-resolve`
+- npm: Remove unused `rollup-plugin-commonjs`
 - npm: Update `rollup-plugin-babel` to `@rollup/plugin-babel`
     and make explicit `babelHelpers` value of `bundled`
 - npm: Update devDeps

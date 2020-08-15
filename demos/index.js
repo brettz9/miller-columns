@@ -1,5 +1,5 @@
-/* globals $ */
-/* eslint-disable no-console */
+/* globals $ -- jQuery doesn't support ESM currently */
+/* eslint-disable no-console -- Logging for demo */
 import addMillerColumnPlugin from '../dist/index-es.js';
 
 (async () => {

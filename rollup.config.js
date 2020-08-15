@@ -34,7 +34,7 @@ function getRollupObject ({minifying, format = 'umd'} = {}) {
   return nonMinified;
 }
 
-// eslint-disable-next-line import/no-anonymous-default-export
+// eslint-disable-next-line import/no-anonymous-default-export -- Rollup config
 export default [
   getRollupObject(),
   getRollupObject({minifying: true}),

@@ -83,7 +83,6 @@ async function addMillerColumnPlugin ($, {namespace = 'miller', stylesheets = ['
       scrollLeft: width
     }, settings.delay, function () {
       // Why isn't this working when we instead use this `last` on the `animate` above?
-      // eslint-disable-next-line unicorn/no-fn-reference-in-iterator
       const last = $columns.find(`.${namespace}-column:not(.${namespace}-collapse)`).last();
       // last[0].scrollIntoView(); // Scrolls vertically also unfortunately
       last[0].scrollLeft = width;
@@ -115,7 +114,7 @@ async function addMillerColumnPlugin ($, {namespace = 'miller', stylesheets = ['
           $ancestor = $this.parent().parent();
 
         // Retain item hierarchy (because it is lost after flattening).
-        // eslint-disable-next-line no-eq-null
+        // eslint-disable-next-line no-eq-null -- Check either without duplication
         if ($ancestor.length && ($this.data(`${namespace}-ancestor`) == null)) {
           // Use addBack to reset all selection chains.
           $(this).siblings().addBack().data(`${namespace}-ancestor`, $ancestor);
@@ -279,7 +278,6 @@ async function addMillerColumnPlugin ($, {namespace = 'miller', stylesheets = ['
       default:
         if (key.length === 1) {
           checkLastPressed(key);
-          // eslint-disable-next-line unicorn/no-fn-reference-in-iterator
           const matching = $columns.find(`${itemSelector}.${namespace}-selected`).last().siblings().filter(function () {
             return new RegExp('^' + escapeRegex(buffer), 'i').test($(this).text().trim());
           });
@@ -319,7 +317,7 @@ async function addMillerColumnPlugin ($, {namespace = 'miller', stylesheets = ['
       collapse();
 
       // Expand the requested child node on click.
-      // eslint-disable-next-line unicorn/no-fn-reference-in-iterator
+      // eslint-disable-next-line unicorn/no-fn-reference-in-iterator -- jQuery
       $columns.find(itemSelector).on('click', function (ev) {
         const $this = $(this);
         reset($columns);
