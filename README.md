@@ -144,3 +144,4 @@ been loaded.
     1. Option to delete
     1. Option to rename (and trigger event) by clicking into cell
     1. Option to move (by drag and drop and cut-paste key commands)
+1. Adapt from <https://bitbucket.org/brettz9/colbrowser>?
