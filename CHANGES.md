@@ -1,8 +1,14 @@
 # miller-columns
 
-## ?
+## 0.9.0
+
+### User-impacting
 
 - Build: As per latest devDeps/linting
+- Docs: Add screenshot
+
+### Dev-impacting
+
 - Linting (ESLint): Per latest ash-nazg / ESLint 7
 - Linting (Remark): Remove `remarkrc`
 - Testing: Update testcafe API
@@ -11,7 +17,7 @@
 - npm: Remove unused `rollup-plugin-commonjs`
 - npm: Update `rollup-plugin-babel` to `@rollup/plugin-babel`
     and make explicit `babelHelpers` value of `bundled`
-- npm: Update devDeps
+- npm: Update devDeps.
 
 ## 0.8.1
 

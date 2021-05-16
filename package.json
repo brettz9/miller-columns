@@ -1,6 +1,6 @@
 {
   "name": "miller-columns",
-  "version": "0.8.1",
+  "version": "0.9.0",
   "description": "Miller Columns in ES6 Modules JavaScript",
   "main": "src/index.js",
   "scripts": {
