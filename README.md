@@ -3,6 +3,10 @@
 ES6 Modules adaptation and expansion of
 <http://jsfiddle.net/yckart/cbtnemc7/>
 
+## Screenshots
+
+![Multiple columns](./screenshots/multiple-columns.png)
+
 ## Features
 
 - Works with semantically correct `<ul>` (or `<ol>`) lists
