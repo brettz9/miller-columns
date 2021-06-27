@@ -9,19 +9,26 @@ ES6 Modules adaptation and expansion of
 
 ## Features
 
-- Works with semantically correct `<ul>` (or `<ol>`) lists
-- Well-namespaced CSS classes and `data-*` attributes ("miller-" by default).
-- Using up/down/right/left arrows for navigation
-- Using escape key for resetting to beginning
-- Auto-selection of first item if none chosen
-- Click listeners for navigation
-- Ability to register callback to be triggered with current selection
-    (or upon reset)
-- Default ability to display breadcrumbs (overridable)
-- Default ability for animation (or overridable), including setting the delay
-- Default ability to reset the column browser when clicking within the browser
-    area but not on a column
-- Available stylesheet for basic styling
+- **Good output for styling control**
+  - Works with semantically correct `<ul>` (or `<ol>`) lists
+  - Well-namespaced CSS classes and `data-*` attributes ("miller-" by default).
+  - Available stylesheet for basic styling
+- **Keyboard control**
+  - Using up/down/right/left arrows for navigation
+  - Using escape key for resetting to beginning
+  - Type not only first letter, but buffering to allow multiple keystrokes
+    rapidly after one another for items sharing the same initial letters
+- **Mouse control**
+  - Click listeners for navigation, including on any breadcrumbs
+- **Complementary navigation controls**
+  - Default ability to display breadcrumbs (overridable)
+- **Reasonable ancillary behaviors/features**
+  - Auto-selection of first item if none chosen
+  - Default ability to reset the column browser when clicking within the browser
+      area but not on a column
+  - Default ability for animation (or overridable), including setting the delay
+  - Ability to register callback to be triggered with current selection
+      (or upon reset)
 
 ## Installation
 
