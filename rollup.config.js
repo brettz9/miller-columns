@@ -1,15 +1,15 @@
 import babel from '@rollup/plugin-babel';
 import nodeResolve from '@rollup/plugin-node-resolve';
-import {terser} from 'rollup-plugin-terser';
+import terser from '@rollup/plugin-terser';
 
 /**
  * @external RollupConfig
- * @type {PlainObject}
+ * @type {object}
  * @see {@link https://rollupjs.org/guide/en#big-list-of-options}
  */
 
 /**
- * @param {PlainObject} cfg
+ * @param {object} cfg
  * @param {boolean} cfg.minifying
  * @param {"umd"|"es"} cfg.format
  * @returns {RollupConfig}
@@ -34,7 +34,6 @@ function getRollupObject ({minifying, format = 'umd'} = {}) {
   return nonMinified;
 }
 
-// eslint-disable-next-line import/no-anonymous-default-export -- Rollup config
 export default [
   getRollupObject(),
   getRollupObject({minifying: true}),

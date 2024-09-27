@@ -89,7 +89,6 @@ import $ from 'jquery';
 
 import addMillerColumnPlugin from './node_modules/miller-columns/dist/index-es.min.js';
 
-(async () => {
 // The second options argument is optional
 await addMillerColumnPlugin($, {stylesheets: ['path/to/extra-stylesheet.css', '@default']});
 
@@ -99,7 +98,6 @@ $('div.miller-columns').millerColumns({
     console.log('User selected:', $item);
   }
 });
-})();
 ```
 
 ## Constructor

@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars -- Convenient */
 /**
  * MIT License.
  *
@@ -18,7 +19,7 @@ const defaultCSSURL = new URL('../miller-columns.css', moduleURL).href;
  * @returns {string}
  */
 function escapeRegex (s) {
-  return s.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, '\\$&');
+  return s.replaceAll(/[-[\]{}()*+?.,\\^$|#\s]/g, String.raw`\$&`);
 }
 
 /**
@@ -26,11 +27,11 @@ function escapeRegex (s) {
 */
 
 /**
- * @param {external:jQuery} $
+ * @param {jQuery} $
  * @param {PlainObject} cfg
  * @param {string} cfg.namespace
  * @param {string[]} cfg.stylesheets
- * @returns {external:jQuery}
+ * @returns {jQuery}
  */
 async function addMillerColumnPlugin ($, {namespace = 'miller', stylesheets = ['@default']} = {}) {
   let settings;
@@ -44,7 +45,7 @@ async function addMillerColumnPlugin ($, {namespace = 'miller', stylesheets = ['
 
   /**
    * Returns a list of the currently selected items.
-   * @returns {external:jQuery}
+   * @returns {jQuery}
    */
   function chain () {
     return $(`.${namespace}-column > .${namespace}-selected`);
@@ -59,9 +60,9 @@ async function addMillerColumnPlugin ($, {namespace = 'miller', stylesheets = ['
 
     chain().each(function () {
       const $crumb = $(this);
-      $(`<span class="${namespace}-breadcrumb">`)
-        .text($crumb.text().trim())
-        .click(function () {
+      $(`<span class="${namespace}-breadcrumb">`).
+        text($crumb.text().trim()).
+        click(function () {
           $crumb.click();
         }).appendTo($breadcrumb);
     });
@@ -70,8 +71,8 @@ async function addMillerColumnPlugin ($, {namespace = 'miller', stylesheets = ['
   /**
  * Ensure the viewport shows the entire newly expanded item.
  *
- * @param {external:jQuery} $column
- * @param {external:jQuery} $columns
+ * @param {jQuery} $column
+ * @param {jQuery} $columns
  * @returns {void}
  */
   function animation ($column, $columns) {
@@ -95,7 +96,7 @@ async function addMillerColumnPlugin ($, {namespace = 'miller', stylesheets = ['
   /**
  * Convert nested lists into columns using breadth-first traversal.
  *
- * @param {external:jQuery} $columns
+ * @param {jQuery} $columns
  * @returns {void}
  */
   function unnest ($columns) {
@@ -114,7 +115,7 @@ async function addMillerColumnPlugin ($, {namespace = 'miller', stylesheets = ['
           $ancestor = $this.parent().parent();
 
         // Retain item hierarchy (because it is lost after flattening).
-        // eslint-disable-next-line no-eq-null -- Check either without duplication
+        // eslint-disable-next-line eqeqeq, no-eq-null -- Check either without duplication
         if ($ancestor.length && ($this.data(`${namespace}-ancestor`) == null)) {
           // Use addBack to reset all selection chains.
           $(this).siblings().addBack().data(`${namespace}-ancestor`, $ancestor);
@@ -141,14 +142,14 @@ async function addMillerColumnPlugin ($, {namespace = 'miller', stylesheets = ['
 
   /**
    * Returns the last selected item (i.e., the current cursor).
-   * @returns {external:jQuery}
+   * @returns {jQuery}
    */
   function current () {
     return chain().last();
   }
 
   /**
-   * @param {external:jQuery} $columns
+   * @param {jQuery} $columns
    * @returns {void}
    */
   function scrollIntoView ($columns) {
@@ -156,7 +157,7 @@ async function addMillerColumnPlugin ($, {namespace = 'miller', stylesheets = ['
   }
 
   /**
-   * @param {external:jQuery} $columns
+   * @param {jQuery} $columns
    * @returns {void}
    */
   function userReset ($columns) {
@@ -167,7 +168,7 @@ async function addMillerColumnPlugin ($, {namespace = 'miller', stylesheets = ['
   /**
   * Hide columns (not the first), remove selections, update breadcrumb.
   *
-  * @param {external:jQuery} $columns
+  * @param {jQuery} $columns
   * @returns {void}
   */
   function reset ($columns) {
@@ -231,7 +232,7 @@ async function addMillerColumnPlugin ($, {namespace = 'miller', stylesheets = ['
   */
 
   /**
-   * @param {external:jQuery} $columns
+   * @param {jQuery} $columns
    * @returns {MillerColumnsKeyPress}
    */
   function getKeyPress ($columns) {
@@ -317,7 +318,7 @@ async function addMillerColumnPlugin ($, {namespace = 'miller', stylesheets = ['
       collapse();
 
       // Expand the requested child node on click.
-      // eslint-disable-next-line unicorn/no-fn-reference-in-iterator -- jQuery
+      // eslint-disable-next-line unicorn/no-array-callback-reference -- jQuery
       $columns.find(itemSelector).on('click', function (ev) {
         const $this = $(this);
         reset($columns);
