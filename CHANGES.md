@@ -1,5 +1,12 @@
 # miller-columns
 
+## 0.10.1
+
+### User-impacting
+
+- fix: proper module URL for CSS
+- fix(demo): ensure `load-stylesheets` is in import map
+
 ## 0.10.0
 
 ### User-impacting

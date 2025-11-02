@@ -21,7 +21,7 @@ import loadStylesheets from 'load-stylesheets';
  * }} Settings
  */
 
-const defaultCSSURL = new URL('../miller-columns.css', import.meta.dirname).href;
+const defaultCSSURL = new URL('../miller-columns.css', import.meta.url).href;
 
 /**
  * @param {string} s

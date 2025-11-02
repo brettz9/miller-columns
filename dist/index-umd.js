@@ -4,6 +4,7 @@
   (global = typeof globalThis !== 'undefined' ? globalThis : global || self, global.addMillerColumnPlugin = factory());
 })(this, (function () { 'use strict';
 
+  var _documentCurrentScript = typeof document !== 'undefined' ? document.currentScript : null;
   /**
    * @param {string|string[]} stylesheets
    * @param {{
@@ -164,7 +165,7 @@
    * }} Settings
    */
 
-  const defaultCSSURL = new URL('../miller-columns.css', undefined).href;
+  const defaultCSSURL = new URL('../miller-columns.css', (typeof document === 'undefined' && typeof location === 'undefined' ? require('u' + 'rl').pathToFileURL(__filename).href : typeof document === 'undefined' ? location.href : (_documentCurrentScript && _documentCurrentScript.tagName.toUpperCase() === 'SCRIPT' && _documentCurrentScript.src || new URL('index-umd.js', document.baseURI).href))).href;
 
   /**
    * @param {string} s
