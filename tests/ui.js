@@ -1,6 +1,6 @@
 // https://github.com/DevExpress/testcafe
 // https://devexpress.github.io/testcafe/documentation/test-api/
-// https://github.com/helen-dikareva/axe-testcafe
+// https://github.com/testcafe-community/axe
 import {Selector} from 'testcafe';
 
 fixture`TestCafe UI tests`.

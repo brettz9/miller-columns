@@ -1,5 +1,16 @@
 # miller-columns
 
+## 0.10.0
+
+### User-impacting
+
+- feat: TypeScript
+- docs: Group features for easier discovery; add mention of ability to type initial letter(s)
+
+### Dev-impacting
+
+- chore: update devDeps, switch to native ESM, lint
+
 ## 0.9.0
 
 ### User-impacting

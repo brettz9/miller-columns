@@ -145,17 +145,27 @@ function loadStylesheets(stylesheets, {
  */
 
 
-// Todo: Replace the `moduleURL` with `import.meta` `moduleURL` once
-//  implemented; https://github.com/tc39/proposal-import-meta
-const moduleURL = new URL('node_modules/miller-columns/src/index.js', location);
-const defaultCSSURL = new URL('../miller-columns.css', moduleURL).href;
+/**
+ * @typedef {{
+ *   delay: JQuery.Duration | string,
+ *   resetOnOutsideClick: boolean,
+ *   breadcrumb: () => void,
+ *   current: (li: JQuery<HTMLLIElement>, $columns: JQuery<HTMLElement>) => void,
+ *   preview: null|((li: JQuery<HTMLLIElement>, $columns: JQuery<HTMLElement>) => void),
+ *   animation: (li: JQuery<HTMLLIElement>, $columns: JQuery<HTMLElement>) => void,
+ *   reset: ($columns: JQuery<HTMLElement>) => void,
+ *   scroll?: ($column: JQuery<HTMLElement>|null, $columns: JQuery<HTMLElement>) => void
+ * }} Settings
+ */
+
+const defaultCSSURL = new URL('../miller-columns.css', import.meta.dirname).href;
 
 /**
  * @param {string} s
  * @returns {string}
  */
 function escapeRegex(s) {
-  return s.replaceAll(/[-[\]{}()*+?.,\\^$|#\s]/g, String.raw`\$&`);
+  return s.replaceAll(/[\-\[\]\{\}\(\)*+?.,\\^$\|#\s]/gv, String.raw`\$&`);
 }
 
 /**
@@ -164,15 +174,16 @@ function escapeRegex(s) {
 
 /**
  * @param {jQuery} $
- * @param {PlainObject} cfg
- * @param {string} cfg.namespace
- * @param {string[]} cfg.stylesheets
- * @returns {jQuery}
+ * @param {object} cfg
+ * @param {string} [cfg.namespace]
+ * @param {string[]} [cfg.stylesheets]
+ * @returns {Promise<jQuery>}
  */
 async function addMillerColumnPlugin($, {
   namespace = 'miller',
   stylesheets = ['@default']
 } = {}) {
+  /** @type {Settings} */
   let settings;
   const columnSelector = `ul:not(.${namespace}-no-columns),ol:not(.${namespace}-no-columns)`;
   const itemSelector = 'li';
@@ -184,7 +195,7 @@ async function addMillerColumnPlugin($, {
 
   /**
    * Returns a list of the currently selected items.
-   * @returns {jQuery}
+   * @returns {JQuery<HTMLElement>}
    */
   function chain() {
     return $(`.${namespace}-column > .${namespace}-selected`);
@@ -207,14 +218,14 @@ async function addMillerColumnPlugin($, {
   /**
   * Ensure the viewport shows the entire newly expanded item.
   *
-  * @param {jQuery} $column
-  * @param {jQuery} $columns
+  * @param {JQuery<HTMLElement>|null} $column
+  * @param {JQuery<HTMLElement>} $columns
   * @returns {void}
   */
   function animation($column, $columns) {
     let width = 0;
-    chain().not($column).each(function () {
-      width += $(this).outerWidth(true);
+    ($column ? chain().not($column) : chain()).each(function () {
+      width += /** @type {number} */$(this).outerWidth(true);
     });
     $columns.stop().animate({
       scrollLeft: width
@@ -232,7 +243,7 @@ async function addMillerColumnPlugin($, {
   /**
   * Convert nested lists into columns using breadth-first traversal.
   *
-  * @param {jQuery} $columns
+  * @param {JQuery<HTMLElement>} $columns
   * @returns {void}
   */
   function unnest($columns) {
@@ -242,7 +253,7 @@ async function addMillerColumnPlugin($, {
     // Push the root unordered list item into the queue.
     queue.push($columns.children());
     while (queue.length) {
-      $node = queue.shift();
+      $node = /** @type {JQuery<HTMLElement>} */queue.shift();
       $node.children(itemSelector).each(function (item, el) {
         const $this = $(this);
         const $child = $this.children(columnSelector),
@@ -275,14 +286,14 @@ async function addMillerColumnPlugin($, {
 
   /**
    * Returns the last selected item (i.e., the current cursor).
-   * @returns {jQuery}
+   * @returns {JQuery<HTMLElement>}
    */
   function current() {
     return chain().last();
   }
 
   /**
-   * @param {jQuery} $columns
+   * @param {JQuery<HTMLElement>} $columns
    * @returns {void}
    */
   function scrollIntoView($columns) {
@@ -290,7 +301,7 @@ async function addMillerColumnPlugin($, {
   }
 
   /**
-   * @param {jQuery} $columns
+   * @param {JQuery<HTMLElement>} $columns
    * @returns {void}
    */
   function userReset($columns) {
@@ -301,7 +312,7 @@ async function addMillerColumnPlugin($, {
   /**
   * Hide columns (not the first), remove selections, update breadcrumb.
   *
-  * @param {jQuery} $columns
+  * @param {JQuery<HTMLElement>} $columns
   * @returns {void}
   */
   function reset($columns) {
@@ -363,18 +374,19 @@ async function addMillerColumnPlugin($, {
   */
 
   /**
-   * @param {jQuery} $columns
+   * @param {JQuery<HTMLElement>} $columns
    * @returns {MillerColumnsKeyPress}
    */
   function getKeyPress($columns) {
     let buffer = '';
+    /** @type {number} */
     let lastTime;
     /**
      * @param {string} key
      * @returns {void}
      */
     function checkLastPressed(key) {
-      const currTime = new Date();
+      const currTime = Date.now();
       if (!lastTime || currTime - lastTime < 500) {
         buffer += key;
       } else {
@@ -383,9 +395,8 @@ async function addMillerColumnPlugin($, {
       lastTime = currTime;
     }
     return function keypress(ev) {
-      const {
-        key
-      } = ev;
+      // eslint-disable-next-line prefer-destructuring -- TS
+      const key = /** @type {Event & {key: string}} */ev.key;
       // Was an attempt made to move the currently selected item (the cursor)?
       let moved = false;
       switch (key) {
@@ -412,7 +423,7 @@ async function addMillerColumnPlugin($, {
           if (key.length === 1) {
             checkLastPressed(key);
             const matching = $columns.find(`${itemSelector}.${namespace}-selected`).last().siblings().filter(function () {
-              return new RegExp('^' + escapeRegex(buffer), 'i').test($(this).text().trim());
+              return new RegExp('^' + escapeRegex(buffer), 'iv').test($(this).text().trim());
             });
             matching.first().click();
           }
@@ -429,7 +440,12 @@ async function addMillerColumnPlugin($, {
       }
     };
   }
+
+  /**
+   * @param {Partial<Settings>} options
+   */
   $.fn.millerColumns = function (options) {
+    /** @type {Settings} */
     const defaults = {
       current($item) {/* */},
       reset($columns) {/* */},

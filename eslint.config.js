@@ -25,13 +25,14 @@ export default [
     files: ['*.md/*.js'],
     rules: {
       'no-unused-vars': 'off',
-      'no-console': 'off'
+      'no-console': 'off',
+      'sonarjs/no-internal-api-use': 'off',
+      'import/no-unresolved': 'off'
     }
   },
   {
     rules: {
       // Disable for now
-      'require-unicode-regexp': 0,
       '@stylistic/max-len': 0
     }
   }

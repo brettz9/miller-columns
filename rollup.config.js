@@ -1,5 +1,5 @@
-import babel from '@rollup/plugin-babel';
-import nodeResolve from '@rollup/plugin-node-resolve';
+import {babel} from '@rollup/plugin-babel';
+import {nodeResolve} from '@rollup/plugin-node-resolve';
 import terser from '@rollup/plugin-terser';
 
 /**
@@ -10,9 +10,9 @@ import terser from '@rollup/plugin-terser';
 
 /**
  * @param {object} cfg
- * @param {boolean} cfg.minifying
- * @param {"umd"|"es"} cfg.format
- * @returns {RollupConfig}
+ * @param {boolean} [cfg.minifying]
+ * @param {"umd"|"es"} [cfg.format]
+ * @returns {import('rollup').RollupOptions}
  */
 function getRollupObject ({minifying, format = 'umd'} = {}) {
   const nonMinified = {
@@ -29,6 +29,7 @@ function getRollupObject ({minifying, format = 'umd'} = {}) {
     ]
   };
   if (minifying) {
+    // @ts-expect-error Bug?
     nonMinified.plugins.push(terser());
   }
   return nonMinified;
