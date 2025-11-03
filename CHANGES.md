@@ -1,5 +1,11 @@
 # miller-columns
 
+## 0.10.3
+
+### User-impacting
+
+- fix(typescript): proper `stylesheets` export for `addMillerColumnPlugin`
+
 ## 0.10.2
 
 ### User-impacting

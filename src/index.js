@@ -39,7 +39,7 @@ function escapeRegex (s) {
  * @param {jQuery} $
  * @param {object} cfg
  * @param {string} [cfg.namespace]
- * @param {string[]} [cfg.stylesheets]
+ * @param {Exclude<import('load-stylesheets').Stylesheets, string>} [cfg.stylesheets]
  * @returns {Promise<jQuery>}
  */
 async function addMillerColumnPlugin ($, {namespace = 'miller', stylesheets = ['@default']} = {}) {

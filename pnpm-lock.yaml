@@ -30,8 +30,8 @@ importers:
         specifier: ^3.5.33
         version: 3.5.33
       '@types/node':
-        specifier: ^24.9.2
-        version: 24.9.2
+        specifier: ^24.10.0
+        version: 24.10.0
       axe-core:
         specifier: ^4.11.0
         version: 4.11.0
@@ -66,8 +66,8 @@ importers:
         specifier: ^3.7.1
         version: 3.7.1
       load-stylesheets:
-        specifier: ^0.12.5
-        version: 0.12.5
+        specifier: ^0.13.0
+        version: 0.13.0
       open-cli:
         specifier: ^8.0.0
         version: 8.0.0
@@ -1233,8 +1233,8 @@ packages:
   '@types/node@20.14.5':
     resolution: {integrity: sha512-aoRR+fJkZT2l0aGOJhuA8frnCSoNX6W7U2mpNq63+BxBIj5BQFt8rHy627kijCmm63ijdSdwvGgpUsU6MBsZZA==}
 
-  '@types/node@24.9.2':
-    resolution: {integrity: sha512-uWN8YqxXxqFMX2RqGOrumsKeti4LlmIMIyV0lgut4jx7KQBcBiW6vkDtIBvHnHIquwNfJhk8v2OtmO8zXWHfPA==}
+  '@types/node@24.10.0':
+    resolution: {integrity: sha512-qzQZRBqkFsYyaSWXuEHc2WR9c0a0CXwiE5FWUvn7ZM+vdy1uZLfCunD38UzhuB7YN/J11ndbDBcTmOdxJo9Q7A==}
 
   '@types/resolve@1.20.2':
     resolution: {integrity: sha512-60BCwRFOZCQhDncwQdxxeOEEkbc5dIMccYLwbxsS4TUNeVECQ/pBJ0j09mrHOl/JJvpRPGwO9SvE4nR2Nb/a4Q==}
@@ -3324,8 +3324,8 @@ packages:
   linux-platform-info@0.0.3:
     resolution: {integrity: sha512-FZhfFOIz0i4EGAvM4fQz+eayE9YzMuTx45tbygWYBttNapyiODg85BnAlQ1xnahEkvIM87T98XhXSfW8JAClHg==}
 
-  load-stylesheets@0.12.5:
-    resolution: {integrity: sha512-OFwTKYRUQt8qVl5ptwvmcDludAcPA9UsbbFf1/jFELwklUDF0U2bNHywWrX8p+yYuyAz/7vWflRkHl50A2yKDw==}
+  load-stylesheets@0.13.0:
+    resolution: {integrity: sha512-k7e9SadCitGS1ljCLfh12wwiRLZE/RvBMoaRZVVmh5pVBMPveFx+0U3seshfdlv7t5LUfVqr3wCq8NOeEeoVOQ==}
 
   locate-path@3.0.0:
     resolution: {integrity: sha512-7AO748wWnIhNqAuaty2ZWHkQHRSNfPVIsPIfwEOWO22AmaoVrWavlOcMR5nzTLNYvp36X220/maaRsrec1G65A==}
@@ -6177,7 +6177,7 @@ snapshots:
   '@types/glob@7.2.0':
     dependencies:
       '@types/minimatch': 5.1.2
-      '@types/node': 24.9.2
+      '@types/node': 24.10.0
 
   '@types/jquery@3.5.33':
     dependencies:
@@ -6201,7 +6201,7 @@ snapshots:
     dependencies:
       undici-types: 5.26.5
 
-  '@types/node@24.9.2':
+  '@types/node@24.10.0':
     dependencies:
       undici-types: 7.16.0
 
@@ -8778,7 +8778,7 @@ snapshots:
     dependencies:
       os-family: 1.1.0
 
-  load-stylesheets@0.12.5: {}
+  load-stylesheets@0.13.0: {}
 
   locate-path@3.0.0:
     dependencies:

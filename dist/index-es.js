@@ -1,5 +1,19 @@
 /**
- * @param {string|string[]} stylesheets
+ * @typedef {{
+ *   before?: HTMLElement,
+ *   after?: HTMLElement,
+ *   favicon?: boolean,
+ *   image?: boolean,
+ *   canvas?: boolean,
+ * }} Options
+ */
+
+/**
+ * @typedef {string|
+ *   (string|[stylesheetURL: string, options: Options])[]} Stylesheets
+ */
+/**
+ * @param {Stylesheets} stylesheets
  * @param {{
  *   before?: HTMLElement,
  *   after?: HTMLElement,
@@ -25,16 +39,6 @@ function loadStylesheets(stylesheets, {
   acceptErrors
 } = {}) {
   stylesheets = Array.isArray(stylesheets) ? stylesheets : [stylesheets];
-
-  /**
-   * @typedef {{
-   *   before?: HTMLElement,
-   *   after?: HTMLElement,
-   *   favicon?: boolean,
-   *   image?: boolean,
-   *   canvas?: boolean,
-   * }} Options
-   */
 
   /**
    * @param {string|[stylesheetURL: string, options: Options]} stylesheetURLInfo
@@ -176,7 +180,7 @@ function escapeRegex(s) {
  * @param {jQuery} $
  * @param {object} cfg
  * @param {string} [cfg.namespace]
- * @param {string[]} [cfg.stylesheets]
+ * @param {Exclude<import('load-stylesheets').Stylesheets, string>} [cfg.stylesheets]
  * @returns {Promise<jQuery>}
  */
 async function addMillerColumnPlugin($, {
