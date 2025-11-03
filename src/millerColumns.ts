@@ -4,4 +4,6 @@ declare global {
   }
 }
 
+export type millerColumns = JQuery['millerColumns'];
+
 export {};

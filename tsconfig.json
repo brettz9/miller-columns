@@ -15,7 +15,7 @@
     "demos/**/*.js",
     "src/**/*.js",
     "tests/**/*.js",
-    "typings/**/*.d.ts"
+    "src/**/*.ts"
   ],
   "exclude": ["node_modules"]
 }

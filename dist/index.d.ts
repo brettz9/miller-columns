@@ -9,6 +9,7 @@ export type Settings = {
     reset: ($columns: JQuery<HTMLElement>) => void;
     scroll?: ($column: JQuery<HTMLElement> | null, $columns: JQuery<HTMLElement>) => void;
 };
+export type millerColumns = import("./millerColumns.ts").millerColumns;
 /**
 * @external jQuery
 */

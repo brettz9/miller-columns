@@ -1,5 +1,11 @@
 # miller-columns
 
+## 0.10.2
+
+### User-impacting
+
+- fix(typescript): export `millerColumns` type
+
 ## 0.10.1
 
 ### User-impacting

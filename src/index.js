@@ -388,4 +388,8 @@ async function addMillerColumnPlugin ($, {namespace = 'miller', stylesheets = ['
   return $;
 }
 
+/**
+ * @typedef {import('./millerColumns.ts').millerColumns} millerColumns
+ */
+
 export default addMillerColumnPlugin;
