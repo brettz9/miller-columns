@@ -3,13 +3,6 @@
 // https://github.com/testcafe-community/axe
 import {axeCheck} from '@testcafe-community/axe';
 
-/**
-* @external AxeResult
-*/
-/**
- * @external TestcafeTest
-*/
-
 /* eslint-disable jsdoc/imports-as-dependencies -- Bug with no explicit `types` */
 /**
  * @param {typeof import('testcafe').t} t
