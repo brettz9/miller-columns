@@ -1,6 +1,7 @@
 declare global {
     interface JQuery {
         millerColumns(options: Partial<import('./index.js').Settings>): JQuery;
+        addItem?(item: string | JQuery<HTMLLIElement>, $parent?: JQuery<HTMLLIElement>): JQuery<HTMLLIElement>;
     }
 }
 export type millerColumns = JQuery['millerColumns'];

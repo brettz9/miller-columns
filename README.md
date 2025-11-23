@@ -138,6 +138,59 @@ been loaded.
     browser to the beginning upon clicking within the columns area where
     it is not a column. Defaults to `true`.
 
+## Dynamic Item Management
+
+After initializing the miller-columns plugin, you can dynamically add new items:
+
+### addItem(item, $parent)
+
+Adds a new item to the column browser. The item can contain nested lists which will be automatically unnested and integrated into the column structure.
+
+**Parameters:**
+- `item` (string | jQuery) - An HTML string or jQuery element representing the new list item (`<li>`). Can include nested `<ul>` or `<ol>` elements.
+- `$parent` (jQuery, optional) - A jQuery object representing the parent item to which this item should be added as a child. If omitted, the item is added to the root level (first column).
+
+**Returns:** jQuery object representing the newly added item.
+
+**Example:**
+
+```js
+const $columns = $('div.miller-columns').millerColumns({
+  current ($item, $cols) {
+    console.log('User selected:', $item);
+  }
+});
+
+// Add a simple item to the root level
+$columns.addItem('<li><a href="#">New Root Item</a></li>');
+
+// Add an item with nested children (automatically unnested)
+$columns.addItem(`
+  <li><a href="#">Parent Item</a>
+    <ul>
+      <li><a href="#">Child 1</a></li>
+      <li><a href="#">Child 2</a>
+        <ul>
+          <li><a href="#">Grandchild</a></li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+`);
+
+// Add a child to an existing item
+const $existingParent = $('.miller-column li').first();
+$columns.addItem('<li><a href="#">New Child</a></li>', $existingParent);
+```
+
+The `addItem` method automatically:
+- Unnests any nested lists within the new item
+- Preserves hierarchy through data attributes
+- Sets up proper parent-child relationships
+- Adds appropriate CSS classes
+- Registers click event handlers
+- Integrates seamlessly with existing column navigation
+
 ## To-dos
 
 1. Stop jolting when switching between those with preview panes at same

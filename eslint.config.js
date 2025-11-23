@@ -23,11 +23,18 @@ export default [
   },
   {
     files: ['*.md/*.js'],
+    languageOptions: {
+      globals: {
+        $: 'readonly'
+      }
+    },
     rules: {
       'no-unused-vars': 'off',
       'no-console': 'off',
+      'no-shadow': 'off',
       'sonarjs/no-internal-api-use': 'off',
-      'import/no-unresolved': 'off'
+      'import/no-unresolved': 'off',
+      'import/unambiguous': 'off'
     }
   },
   {

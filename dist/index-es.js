@@ -244,14 +244,15 @@ async function addMillerColumnPlugin($, {
    * Convert nested lists into columns using breadth-first traversal.
    *
    * @param {JQuery<HTMLElement>} $columns
+   * @param {JQuery<HTMLElement>} [$startNode] - Optional starting node for partial unnesting
    * @returns {void}
    */
-  function unnest($columns) {
+  function unnest($columns, $startNode) {
     const queue = [];
     let $node;
 
     // Push the root unordered list item into the queue.
-    queue.push($columns.children());
+    queue.push($startNode || $columns.children());
     while (queue.length) {
       $node = /** @type {JQuery<HTMLElement>} */queue.shift();
       $node.children(itemSelector).each(function (item, el) {
@@ -456,7 +457,7 @@ async function addMillerColumnPlugin($, {
       resetOnOutsideClick: true
     };
     settings = $.extend(defaults, options);
-    return this.each(function () {
+    const $result = this.each(function () {
       const $columns = $(this);
       unnest($columns);
       collapse();
@@ -504,6 +505,80 @@ async function addMillerColumnPlugin($, {
       // The last set of columns on the page receives focus.
       // $columns.focus();
     });
+
+    /**
+     * Add a new item dynamically to the miller columns structure.
+     * The item can contain nested lists which will be automatically unnested.
+     *
+     * @param {string|JQuery<HTMLLIElement>} item - HTML string or jQuery element for the new list item
+     * @param {JQuery<HTMLLIElement>} [$parent] - Optional parent item to add this as a child.
+     *                                             If not provided, adds to root level.
+     * @returns {JQuery<HTMLLIElement>} The newly added item
+     */
+    $result.addItem = function (item, $parent) {
+      const $item = /** @type {JQuery<HTMLLIElement>} */typeof item === 'string' ? $(item) : item;
+      const $columns = $result;
+      if (!$parent) {
+        // Add to root level (first column)
+        const $rootColumn = $columns.find(`.${namespace}-column`).first();
+        if ($rootColumn.length) {
+          $rootColumn.append($item);
+        } else {
+          // No columns exist yet, create initial structure
+          const $ul = $('<ul>').append($item);
+          $columns.append($ul);
+        }
+      } else {
+        // Add as child of existing parent
+        let $childList = $parent.data(`${namespace}-child`);
+        if (!$childList) {
+          // Parent doesn't have children yet, create a new list
+          $childList = $('<ul>');
+          $parent.append($childList);
+          $parent.data(`${namespace}-child`, $childList).addClass(`${namespace}-parent`);
+        }
+        $childList.append($item);
+      }
+
+      // Unnest the newly added item and its descendants
+      const $itemList = $item.parent();
+      unnest($columns, $itemList);
+
+      // Set up click handler for the new item
+      $item.off('click').on('click', function (ev) {
+        const $this = /** @type {JQuery<HTMLLIElement>} */$(this);
+        reset($columns);
+        const $child = $this.data(`${namespace}-child`);
+        let $ancestor = $this;
+        if ($child) {
+          $child.removeClass(`${namespace}-collapse`).children().removeClass(`${namespace}-selected`);
+        }
+
+        // Reveal (uncollapse) all ancestors to the clicked item.
+        while ($ancestor) {
+          $ancestor.addClass(`${namespace}-selected`).parent().removeClass(`${namespace}-collapse`);
+          $ancestor = $ancestor.data(`${namespace}-ancestor`);
+        }
+        settings.animation.call(this, $this, $columns);
+        settings.breadcrumb.call(this);
+        settings.current.call(this, $this, $columns);
+        if (settings.preview) {
+          const isFinalCol = $this.hasClass(`${namespace}-selected`) && !$this.hasClass(`${namespace}-parent`);
+          if (isFinalCol) {
+            const content = settings.preview.call(this, $this, $columns);
+            $this.parent().parent().append(`<ul class="${namespace}-column ${namespace}-preview">
+                                <li>${content}</li>
+                            </ul>`);
+          }
+        }
+
+        // Don't allow the underlying element
+        // to receive the click event.
+        ev.stopPropagation();
+      });
+      return $item;
+    };
+    return $result;
   };
   return $;
 }
