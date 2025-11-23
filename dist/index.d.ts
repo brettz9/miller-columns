@@ -11,9 +11,6 @@ export type Settings = {
 };
 export type millerColumns = import("./millerColumns.ts").millerColumns;
 /**
-* @external jQuery
-*/
-/**
  * @param {jQuery} $
  * @param {object} cfg
  * @param {string} [cfg.namespace]

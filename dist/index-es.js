@@ -173,10 +173,6 @@ function escapeRegex(s) {
 }
 
 /**
-* @external jQuery
-*/
-
-/**
  * @param {jQuery} $
  * @param {object} cfg
  * @param {string} [cfg.namespace]
@@ -220,12 +216,12 @@ async function addMillerColumnPlugin($, {
   }
 
   /**
-  * Ensure the viewport shows the entire newly expanded item.
-  *
-  * @param {JQuery<HTMLElement>|null} $column
-  * @param {JQuery<HTMLElement>} $columns
-  * @returns {void}
-  */
+   * Ensure the viewport shows the entire newly expanded item.
+   *
+   * @param {JQuery<HTMLElement>|null} $column
+   * @param {JQuery<HTMLElement>} $columns
+   * @returns {void}
+   */
   function animation($column, $columns) {
     let width = 0;
     ($column ? chain().not($column) : chain()).each(function () {
@@ -245,11 +241,11 @@ async function addMillerColumnPlugin($, {
   }
 
   /**
-  * Convert nested lists into columns using breadth-first traversal.
-  *
-  * @param {JQuery<HTMLElement>} $columns
-  * @returns {void}
-  */
+   * Convert nested lists into columns using breadth-first traversal.
+   *
+   * @param {JQuery<HTMLElement>} $columns
+   * @returns {void}
+   */
   function unnest($columns) {
     const queue = [];
     let $node;
@@ -314,11 +310,11 @@ async function addMillerColumnPlugin($, {
   }
 
   /**
-  * Hide columns (not the first), remove selections, update breadcrumb.
-  *
-  * @param {JQuery<HTMLElement>} $columns
-  * @returns {void}
-  */
+   * Hide columns (not the first), remove selections, update breadcrumb.
+   *
+   * @param {JQuery<HTMLElement>} $columns
+   * @returns {void}
+   */
   function reset($columns) {
     collapse();
     chain().removeClass(`${namespace}-selected`);
@@ -372,10 +368,10 @@ async function addMillerColumnPlugin($, {
   }
 
   /**
-  * @callback MillerColumnsKeyPress
-  * @param {Event} e
-  * @returns {void}
-  */
+   * @callback MillerColumnsKeyPress
+   * @param {Event} e
+   * @returns {void}
+   */
 
   /**
    * @param {JQuery<HTMLElement>} $columns
