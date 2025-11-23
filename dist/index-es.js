@@ -543,19 +543,29 @@ async function addMillerColumnPlugin($, {
         // Add as child of existing parent
         let $childList = $parent.data(`${namespace}-child`);
         if (!$childList) {
-          // Parent doesn't have children yet, create a new list
-          $childList = $('<ul>');
+          // Parent doesn't have children yet, create a new list with the item
+          $childList = $('<ul>').append($item);
           $parent.append($childList);
           $parent.data(`${namespace}-child`, $childList).addClass(`${namespace}-parent`);
+
+          // Set the ancestor relationship for the new item
+          $item.data(`${namespace}-ancestor`, $parent);
+
+          // The new list needs to be processed by unnest to become a column
+          unnest($columns, $childList);
+
+          // After unnesting, get the updated reference to the child list
+          $childList = $parent.data(`${namespace}-child`);
+        } else {
+          // Parent already has children - $childList is already a column
+          // Just append the new item directly to it
+          $childList.append($item);
+
+          // Set the ancestor relationship for the new item
+          $item.data(`${namespace}-ancestor`, $parent);
         }
 
-        // Add item to the child list
-        $childList.append($item);
-
-        // Set the ancestor relationship for the item and its siblings
-        $childList.children(itemSelector).data(`${namespace}-ancestor`, $parent);
-
-        // If the item has nested children, process them
+        // If the new item has nested children, process them
         const $child = $item.children(columnSelector);
         if ($child.length) {
           // Set up the parent-child relationship
