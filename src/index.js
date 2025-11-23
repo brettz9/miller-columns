@@ -331,8 +331,8 @@ async function addMillerColumnPlugin ($, {namespace = 'miller', stylesheets = ['
       collapse();
 
       // Expand the requested child node on click.
-      // eslint-disable-next-line unicorn/no-array-callback-reference -- jQuery
-      $columns.find(itemSelector).on('click', function (ev) {
+      // Use event delegation to handle dynamically added items
+      $columns.on('click', itemSelector, function (ev) {
         const $this = $(this);
         reset($columns);
 
@@ -398,12 +398,24 @@ async function addMillerColumnPlugin ($, {namespace = 'miller', stylesheets = ['
       if (!$parent) {
         // Add to root level (first column)
         const $rootColumn = $columns.find(`.${namespace}-column`).first();
+
         if ($rootColumn.length) {
+          // Append to existing root column
           $rootColumn.append($item);
+
+          // If the item has nested children, process them
+          const $child = $item.children(columnSelector);
+          if ($child.length) {
+            // Set up the parent-child relationship
+            $item.data(`${namespace}-child`, $child).addClass(`${namespace}-parent`);
+            // Process the child list to unnest it
+            unnest($columns, $child);
+          }
         } else {
           // No columns exist yet, create initial structure
-          const $ul = $('<ul>').append($item);
-          $columns.append($ul);
+          const $tempWrapper = $('<ul>').append($item);
+          $columns.append($tempWrapper);
+          unnest($columns, $tempWrapper);
         }
       } else {
         // Add as child of existing parent
@@ -416,52 +428,21 @@ async function addMillerColumnPlugin ($, {namespace = 'miller', stylesheets = ['
           $parent.data(`${namespace}-child`, $childList).addClass(`${namespace}-parent`);
         }
 
+        // Add item to the child list
         $childList.append($item);
+
+        // Set the ancestor relationship for the item and its siblings
+        $childList.children(itemSelector).data(`${namespace}-ancestor`, $parent);
+
+        // If the item has nested children, process them
+        const $child = $item.children(columnSelector);
+        if ($child.length) {
+          // Set up the parent-child relationship
+          $item.data(`${namespace}-child`, $child).addClass(`${namespace}-parent`);
+          // Process the child list to unnest it
+          unnest($columns, $child);
+        }
       }
-
-      // Unnest the newly added item and its descendants
-      const $itemList = $item.parent();
-      unnest($columns, $itemList);
-
-      // Set up click handler for the new item
-      $item.off('click').on('click', function (ev) {
-        const $this = /** @type {JQuery<HTMLLIElement>} */ ($(this));
-        reset($columns);
-
-        const $child = $this.data(`${namespace}-child`);
-        let $ancestor = $this;
-
-        if ($child) {
-          $child.removeClass(`${namespace}-collapse`).children().removeClass(`${namespace}-selected`);
-        }
-
-        // Reveal (uncollapse) all ancestors to the clicked item.
-        while ($ancestor) {
-          $ancestor.addClass(`${namespace}-selected`).parent().removeClass(`${namespace}-collapse`);
-          $ancestor = $ancestor.data(`${namespace}-ancestor`);
-        }
-
-        settings.animation.call(this, $this, $columns);
-        settings.breadcrumb.call(this);
-        settings.current.call(this, $this, $columns);
-
-        if (settings.preview) {
-          const isFinalCol = $this.hasClass(`${namespace}-selected`) &&
-                        !$this.hasClass(`${namespace}-parent`);
-          if (isFinalCol) {
-            const content = settings.preview.call(this, $this, $columns);
-            $this.parent().parent().append(
-              `<ul class="${namespace}-column ${namespace}-preview">
-                                <li>${content}</li>
-                            </ul>`
-            );
-          }
-        }
-
-        // Don't allow the underlying element
-        // to receive the click event.
-        ev.stopPropagation();
-      });
 
       return $item;
     };
