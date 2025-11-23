@@ -3,13 +3,11 @@
 // https://github.com/testcafe-community/axe
 import {axeCheck} from '@testcafe-community/axe';
 
-/* eslint-disable jsdoc/imports-as-dependencies -- Bug with no explicit `types` */
 /**
  * @param {typeof import('testcafe').t} t
  * @returns {Promise<ReturnType<import('@testcafe-community/axe').AxeCheck>>}
  */
 async function axeCheckWithConfig (t) {
-  /* eslint-enable jsdoc/imports-as-dependencies -- Bug with no explicit `types` */
   return await axeCheck(
     t,
     // context: https://github.com/dequelabs/axe-core/blob/develop/doc/API.md#context-parameter
