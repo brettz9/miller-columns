@@ -268,8 +268,9 @@
             $ancestor = $this.parent().parent();
 
           // Retain item hierarchy (because it is lost after flattening).
+          // Only set ancestor if it's actually a list item (not the root container)
           // eslint-disable-next-line eqeqeq, no-eq-null -- Check either without duplication
-          if ($ancestor.length && $this.data(`${namespace}-ancestor`) == null) {
+          if ($ancestor.length && $ancestor.is(itemSelector) && $this.data(`${namespace}-ancestor`) == null) {
             // Use addBack to reset all selection chains.
             $(this).siblings().addBack().data(`${namespace}-ancestor`, $ancestor);
           }
@@ -356,7 +357,17 @@
      * @returns {void}
      */
     function moveL() {
-      const $ancestor = current().data(`${namespace}-ancestor`);
+      const $current = current();
+      const $ancestor = $current.data(`${namespace}-ancestor`);
+      const $child = $current.data(`${namespace}-child`);
+
+      // If current item has children and they are visible, but we're at root level,
+      // do nothing - we're already on the parent and just expanded it
+      if ($child && !$child.hasClass(`${namespace}-collapse`) && !$ancestor) {
+        return;
+      }
+
+      // Move to ancestor if it exists
       if ($ancestor) {
         $ancestor.trigger('click');
       }
