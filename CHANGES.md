@@ -1,5 +1,9 @@
 # miller-columns
 
+## 0.10.4
+
+- fix(typescript): global import for millerColumns.d.ts
+
 ## 0.10.3
 
 ### User-impacting

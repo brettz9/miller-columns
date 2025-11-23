@@ -11,7 +11,9 @@
     "strict": true,
     "skipLibCheck": true,
     "target": "es2024",
-    "outDir": "dist"
+    "outDir": "dist",
+    "declarationDir": "dist",
+    "rootDir": "src"
   },
   "include": [
     "src/**/*.js",

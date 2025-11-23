@@ -1,6 +1,6 @@
 {
   "name": "miller-columns",
-  "version": "0.10.3",
+  "version": "0.10.4",
   "description": "Miller Columns in ES6 Modules JavaScript",
   "main": "src/index.js",
   "type": "module",
@@ -8,7 +8,7 @@
   "scripts": {
     "tsc": "tsc",
     "prepublishOnly": "npm run rollup",
-    "rollup": "rollup -c && tsc -p tsconfig-prod.json",
+    "rollup": "rollup -c && tsc -p tsconfig-prod.json && node fix-declarations.js",
     "eslint": "eslint .",
     "lint": "npm run eslint",
     "demo-no-open": "pkill -f \".bin/static -p\" ; npm run eslint && npm run rollup && npm run start",

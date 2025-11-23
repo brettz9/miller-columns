@@ -1,6 +1,6 @@
 declare global {
   interface JQuery {
-    millerColumns(options: Partial<import('../src/index.js').Settings>): JQuery;
+    millerColumns(options: Partial<import('./index.js').Settings>): JQuery;
   }
 }
 
