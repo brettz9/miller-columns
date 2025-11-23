@@ -1,5 +1,10 @@
 # miller-columns
 
+## 0.11.0
+
+- feat: `addItem`
+- fix: prevent left arrow from going up when reaching root
+
 ## 0.10.4
 
 - fix(typescript): global import for millerColumns.d.ts
