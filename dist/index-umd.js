@@ -505,7 +505,7 @@
           // to receive the click event.
           ev.stopPropagation();
         });
-        $columns.on('keydown', getKeyPress($columns));
+        $columns[0].addEventListener('keydown', getKeyPress($columns));
         $columns.on('click', () => {
           if (settings.resetOnOutsideClick) {
             userReset($columns);
