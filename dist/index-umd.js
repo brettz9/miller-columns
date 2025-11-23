@@ -220,8 +220,8 @@
       const $breadcrumb = $(`.${namespace}-breadcrumbs`).empty();
       chain().each(function () {
         const $crumb = $(this);
-        $(`<span class="${namespace}-breadcrumb">`).text($crumb.text().trim()).click(function () {
-          $crumb.click();
+        $(`<span class="${namespace}-breadcrumb">`).text($crumb.text().trim()).on('click', function () {
+          $crumb.trigger('click');
         }).appendTo($breadcrumb);
       });
     }
@@ -343,7 +343,7 @@
      * @returns {void}
      */
     function moveU() {
-      current().prev().click();
+      current().prev().trigger('click');
     }
 
     /**
@@ -351,7 +351,7 @@
      * @returns {void}
      */
     function moveD() {
-      current().next().click();
+      current().next().trigger('click');
     }
 
     /**
@@ -361,7 +361,7 @@
     function moveL() {
       const $ancestor = current().data(`${namespace}-ancestor`);
       if ($ancestor) {
-        $ancestor.click();
+        $ancestor.trigger('click');
       }
     }
 
@@ -372,7 +372,7 @@
     function moveR() {
       const $child = current().data(`${namespace}-child`);
       if ($child) {
-        $child.children(itemSelector).first().click();
+        $child.children(itemSelector).first().trigger('click');
       } else {
         moveD();
       }
@@ -436,7 +436,7 @@
               const matching = $columns.find(`${itemSelector}.${namespace}-selected`).last().siblings().filter(function () {
                 return new RegExp('^' + escapeRegex(buffer), 'iv').test($(this).text().trim());
               });
-              matching.first().click();
+              matching.first().trigger('click');
             }
             moved = true;
             break;
@@ -444,7 +444,7 @@
 
         // If no item is selected, then jump to the first item.
         if (moved && current().length === 0) {
-          $(`.${namespace}-column`).first().children().first().click();
+          $(`.${namespace}-column`).first().children().first().trigger('click');
         }
         if (moved) {
           ev.preventDefault();

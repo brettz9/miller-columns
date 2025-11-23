@@ -72,8 +72,8 @@ async function addMillerColumnPlugin ($, {namespace = 'miller', stylesheets = ['
       const $crumb = $(this);
       $(`<span class="${namespace}-breadcrumb">`).
         text($crumb.text().trim()).
-        click(function () {
-          $crumb.click();
+        on('click', function () {
+          $crumb.trigger('click');
         }).appendTo($breadcrumb);
     });
   }
@@ -198,7 +198,7 @@ async function addMillerColumnPlugin ($, {namespace = 'miller', stylesheets = ['
    * @returns {void}
    */
   function moveU () {
-    current().prev().click();
+    current().prev().trigger('click');
   }
 
   /**
@@ -206,7 +206,7 @@ async function addMillerColumnPlugin ($, {namespace = 'miller', stylesheets = ['
    * @returns {void}
    */
   function moveD () {
-    current().next().click();
+    current().next().trigger('click');
   }
 
   /**
@@ -217,7 +217,7 @@ async function addMillerColumnPlugin ($, {namespace = 'miller', stylesheets = ['
     const $ancestor = current().data(`${namespace}-ancestor`);
 
     if ($ancestor) {
-      $ancestor.click();
+      $ancestor.trigger('click');
     }
   }
 
@@ -229,7 +229,7 @@ async function addMillerColumnPlugin ($, {namespace = 'miller', stylesheets = ['
     const $child = current().data(`${namespace}-child`);
 
     if ($child) {
-      $child.children(itemSelector).first().click();
+      $child.children(itemSelector).first().trigger('click');
     } else {
       moveD();
     }
@@ -294,7 +294,7 @@ async function addMillerColumnPlugin ($, {namespace = 'miller', stylesheets = ['
           const matching = $columns.find(`${itemSelector}.${namespace}-selected`).last().siblings().filter(function () {
             return new RegExp('^' + escapeRegex(buffer), 'iv').test($(this).text().trim());
           });
-          matching.first().click();
+          matching.first().trigger('click');
         }
         moved = true;
         break;
@@ -302,7 +302,7 @@ async function addMillerColumnPlugin ($, {namespace = 'miller', stylesheets = ['
 
       // If no item is selected, then jump to the first item.
       if (moved && (current().length === 0)) {
-        $(`.${namespace}-column`).first().children().first().click();
+        $(`.${namespace}-column`).first().children().first().trigger('click');
       }
 
       if (moved) {
