@@ -477,8 +477,15 @@
       settings = $.extend(defaults, options);
       const $result = this.each(function () {
         const $columns = $(this);
+
+        // Store original HTML for restoration
+        const originalHTML = $columns.html();
+        $columns.data(`${namespace}-original-html`, originalHTML);
         unnest($columns);
         collapse();
+
+        // Store keypress handler for later removal
+        const keypressHandler = getKeyPress($columns);
 
         // Expand the requested child node on click.
         // Use event delegation to handle dynamically added items
@@ -513,12 +520,15 @@
           // to receive the click event.
           ev.stopPropagation();
         });
-        $columns[0].addEventListener('keydown', getKeyPress($columns));
+        $columns[0].addEventListener('keydown', keypressHandler);
         $columns.on('click', () => {
           if (settings.resetOnOutsideClick) {
             userReset($columns);
           }
         });
+
+        // Store handler reference for cleanup
+        $columns.data(`${namespace}-keypress-handler`, keypressHandler);
 
         // The last set of columns on the page receives focus.
         // $columns.focus();
@@ -593,6 +603,58 @@
           }
         }
         return $item;
+      };
+
+      /**
+       * Destroy the miller columns instance and restore original structure.
+       * Removes all event handlers, data attributes, and CSS classes added by the plugin.
+       *
+       * @returns {JQuery<HTMLElement>} The columns element with original structure restored
+       */
+      $result.destroy = function () {
+        const $columns = $result;
+        $columns.each(function () {
+          const $col = $(this);
+
+          // Remove keydown event listener
+          const keypressHandler = $col.data(`${namespace}-keypress-handler`);
+          if (keypressHandler) {
+            this.removeEventListener('keydown', keypressHandler);
+          }
+
+          // Remove click event handlers
+          $col.off('click');
+
+          // Remove all miller-columns CSS classes from columns
+          $col.find(`.${namespace}-column`).removeClass(`${namespace}-column ${namespace}-collapse`);
+
+          // Remove all miller-parent classes and miller-selected classes
+          $col.find(`.${namespace}-parent`).removeClass(`${namespace}-parent`);
+          $col.find(`.${namespace}-selected`).removeClass(`${namespace}-selected`);
+
+          // Remove all data attributes
+          $col.find('li').each(function () {
+            const $item = $(this);
+            $item.removeData(`${namespace}-ancestor`);
+            $item.removeData(`${namespace}-child`);
+          });
+
+          // Remove preview columns
+          $col.find(`.${namespace}-preview`).remove();
+
+          // Restore original HTML structure
+          const originalHTML = $col.data(`${namespace}-original-html`);
+          if (originalHTML) {
+            $col.html(originalHTML);
+            $col.removeData(`${namespace}-original-html`);
+          }
+          $col.removeData(`${namespace}-keypress-handler`);
+        });
+
+        // Remove the addItem and destroy methods
+        delete $result.addItem;
+        delete $result.destroy;
+        return $result;
       };
       return $result;
     };

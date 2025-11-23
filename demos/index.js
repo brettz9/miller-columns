@@ -61,3 +61,12 @@ setTimeout(() => {
     $columns.addItem('<li><a href="#">Dynamically Added Child</a></li>', $parent);
   }
 }, 6000);
+
+// Destroy button handler
+$('#destroy-btn').on('click', () => {
+  console.log('Destroying miller-columns...');
+  if ($columns.destroy) {
+    $columns.destroy();
+    console.log('Miller-columns destroyed and original structure restored');
+  }
+});

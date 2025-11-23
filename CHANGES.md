@@ -1,5 +1,9 @@
 # miller-columns
 
+## 0.12.0
+
+- feat `destroy` method
+
 ## 0.11.0
 
 - feat: `addItem`

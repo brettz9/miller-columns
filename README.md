@@ -191,6 +191,35 @@ The `addItem` method automatically:
 - Registers click event handlers
 - Integrates seamlessly with existing column navigation
 
+### destroy()
+
+Destroys the miller-columns instance and restores the original structure. This method removes all event handlers, data attributes, CSS classes, and structural changes made by the plugin.
+
+**Returns:** jQuery object with the original structure restored.
+
+**Example:**
+
+```js
+const $columns = $('div.miller-columns').millerColumns({
+  current ($item, $cols) {
+    console.log('User selected:', $item);
+  }
+});
+
+// Use the columns...
+
+// Later, clean up and restore original structure
+$columns.destroy();
+```
+
+The `destroy` method:
+- Removes all event handlers (click, keydown)
+- Restores the original nested HTML structure
+- Removes all CSS classes (`miller-column`, `miller-collapse`, `miller-parent`, `miller-selected`)
+- Removes all data attributes (`miller-ancestor`, `miller-child`)
+- Removes preview columns
+- Removes the `addItem` and `destroy` methods themselves
+
 ## To-dos
 
 1. Stop jolting when switching between those with preview panes at same
