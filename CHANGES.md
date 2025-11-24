@@ -1,5 +1,9 @@
 # miller-columns
 
+## 0.13.0
+
+- feat: rename `resetOnOutsideClick` to `outsideClickBehavior` and add behaviors
+
 ## 0.12.1
 
 - fix: `scrollIntoView()`

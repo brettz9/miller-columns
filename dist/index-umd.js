@@ -159,7 +159,7 @@
   /**
    * @typedef {{
    *   delay: JQuery.Duration | string,
-   *   resetOnOutsideClick: boolean,
+   *   outsideClickBehavior: "reset"|"select-parent"|"none",
    *   breadcrumb: () => void,
    *   current: (li: JQuery<HTMLLIElement>, $columns: JQuery<HTMLElement>) => void,
    *   preview: null|((li: JQuery<HTMLLIElement>, $columns: JQuery<HTMLElement>) => void),
@@ -491,7 +491,7 @@
         breadcrumb,
         animation,
         delay: 500,
-        resetOnOutsideClick: true
+        outsideClickBehavior: 'select-parent'
       };
       settings = $.extend(defaults, options);
       const $result = this.each(function () {
@@ -543,9 +543,26 @@
           ev.stopPropagation();
         });
         $columns[0].addEventListener('keydown', keypressHandler);
-        $columns.on('click', () => {
-          if (settings.resetOnOutsideClick) {
-            userReset($columns);
+        $columns.on('click', e => {
+          switch (settings.outsideClickBehavior) {
+            case 'reset':
+              userReset($columns);
+              break;
+            case 'select-parent':
+              {
+                const caretPosition = document.caretPositionFromPoint(e.clientX, e.clientY);
+                const node = caretPosition?.offsetNode;
+                let elem = /** @type {Element|null} */
+                node?.nodeType === 1 ? node : node?.parentElement;
+                while (elem) {
+                  if (elem.matches('ul.miller-column:not(.miller-collapse)')) {
+                    $(elem).prevAll('ul.miller-column:not(.miller-collapse)').first().find('li.miller-selected').trigger('click');
+                    break;
+                  }
+                  elem = elem.parentElement;
+                }
+                break;
+              }
           }
         });
 

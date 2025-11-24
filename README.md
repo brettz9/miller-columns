@@ -134,9 +134,11 @@ been loaded.
     an HTML string which is used to fill the list item which functions as the
     preview pane when selected a final item (an item without children).
 - `delay` - Optional integer indicating animation delay. Defaults to 500ms.
-- `resetOnOutsideClick` - Optional boolean to indicate whether to reset the
-    browser to the beginning upon clicking within the columns area where
-    it is not a column. Defaults to `true`.
+- `outsideClickBehavior` - Optionally set to "reset" to have the
+    column browser reset to the beginning upon clicking within the columns
+    area where it is not a column. If set to `select-parent`, will select the
+    parent column where the node was clicked. If set to `none`, will do nothing.
+    Defaults to `"select-parent"`.
 
 ## Dynamic Item Management
 

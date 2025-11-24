@@ -1,7 +1,7 @@
 export default addMillerColumnPlugin;
 export type Settings = {
     delay: JQuery.Duration | string;
-    resetOnOutsideClick: boolean;
+    outsideClickBehavior: "reset" | "select-parent" | "none";
     breadcrumb: () => void;
     current: (li: JQuery<HTMLLIElement>, $columns: JQuery<HTMLElement>) => void;
     preview: null | ((li: JQuery<HTMLLIElement>, $columns: JQuery<HTMLElement>) => void);
