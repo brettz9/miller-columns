@@ -196,7 +196,9 @@ async function addMillerColumnPlugin ($, {namespace = 'miller', stylesheets = ['
    * @returns {void}
    */
   function moveU () {
-    current().prev().trigger('click');
+    const elem = current().prev();
+    elem[0]?.scrollIntoView({block: 'nearest'});
+    elem.trigger('click');
   }
 
   /**
@@ -204,7 +206,9 @@ async function addMillerColumnPlugin ($, {namespace = 'miller', stylesheets = ['
    * @returns {void}
    */
   function moveD () {
-    current().next().trigger('click');
+    const elem = current().next();
+    elem[0]?.scrollIntoView({block: 'nearest'});
+    elem.trigger('click');
   }
 
   /**
@@ -224,6 +228,7 @@ async function addMillerColumnPlugin ($, {namespace = 'miller', stylesheets = ['
 
     // Move to ancestor if it exists
     if ($ancestor) {
+      $ancestor[0]?.scrollIntoView({block: 'nearest'});
       $ancestor.trigger('click');
     }
   }
@@ -236,7 +241,9 @@ async function addMillerColumnPlugin ($, {namespace = 'miller', stylesheets = ['
     const $child = current().data(`${namespace}-child`);
 
     if ($child) {
-      $child.children(itemSelector).first().trigger('click');
+      const elem = $child.children(itemSelector).first();
+      elem[0]?.scrollIntoView({block: 'nearest'});
+      elem.trigger('click');
     } else {
       moveD();
     }
@@ -301,7 +308,9 @@ async function addMillerColumnPlugin ($, {namespace = 'miller', stylesheets = ['
           const matching = $columns.find(`${itemSelector}.${namespace}-selected`).last().siblings().filter(function () {
             return new RegExp('^' + escapeRegex(buffer), 'iv').test($(this).text().trim());
           });
-          matching.first().trigger('click');
+          const elem = matching.first();
+          elem[0]?.scrollIntoView({block: 'nearest'});
+          elem.trigger('click');
         }
         moved = true;
         break;
@@ -358,6 +367,7 @@ async function addMillerColumnPlugin ($, {namespace = 'miller', stylesheets = ['
         let $ancestor = $this;
 
         if ($child) {
+          $child[0]?.scrollIntoView({block: 'nearest'});
           $child.removeClass(`${namespace}-collapse`).children().removeClass(`${namespace}-selected`);
         }
 

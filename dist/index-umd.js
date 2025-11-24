@@ -341,7 +341,11 @@
      * @returns {void}
      */
     function moveU() {
-      current().prev().trigger('click');
+      const elem = current().prev();
+      elem[0]?.scrollIntoView({
+        block: 'nearest'
+      });
+      elem.trigger('click');
     }
 
     /**
@@ -349,7 +353,11 @@
      * @returns {void}
      */
     function moveD() {
-      current().next().trigger('click');
+      const elem = current().next();
+      elem[0]?.scrollIntoView({
+        block: 'nearest'
+      });
+      elem.trigger('click');
     }
 
     /**
@@ -369,6 +377,9 @@
 
       // Move to ancestor if it exists
       if ($ancestor) {
+        $ancestor[0]?.scrollIntoView({
+          block: 'nearest'
+        });
         $ancestor.trigger('click');
       }
     }
@@ -380,7 +391,11 @@
     function moveR() {
       const $child = current().data(`${namespace}-child`);
       if ($child) {
-        $child.children(itemSelector).first().trigger('click');
+        const elem = $child.children(itemSelector).first();
+        elem[0]?.scrollIntoView({
+          block: 'nearest'
+        });
+        elem.trigger('click');
       } else {
         moveD();
       }
@@ -444,7 +459,11 @@
               const matching = $columns.find(`${itemSelector}.${namespace}-selected`).last().siblings().filter(function () {
                 return new RegExp('^' + escapeRegex(buffer), 'iv').test($(this).text().trim());
               });
-              matching.first().trigger('click');
+              const elem = matching.first();
+              elem[0]?.scrollIntoView({
+                block: 'nearest'
+              });
+              elem.trigger('click');
             }
             moved = true;
             break;
@@ -495,6 +514,9 @@
           const $child = $this.data(`${namespace}-child`);
           let $ancestor = $this;
           if ($child) {
+            $child[0]?.scrollIntoView({
+              block: 'nearest'
+            });
             $child.removeClass(`${namespace}-collapse`).children().removeClass(`${namespace}-selected`);
           }
 

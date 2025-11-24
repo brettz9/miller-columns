@@ -1,5 +1,9 @@
 # miller-columns
 
+## 0.12.1
+
+- fix: `scrollIntoView()`
+
 ## 0.12.0
 
 - feat `destroy` method
