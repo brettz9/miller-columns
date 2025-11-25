@@ -348,7 +348,8 @@ async function addMillerColumnPlugin($, {
   function moveD() {
     const elem = current().next();
     elem[0]?.scrollIntoView({
-      block: 'nearest'
+      block: 'nearest',
+      inline: 'start'
     });
     elem.trigger('click');
   }
@@ -447,18 +448,20 @@ async function addMillerColumnPlugin($, {
           moved = true;
           break;
         default:
-          if (key.length === 1) {
-            checkLastPressed(key);
-            const matching = $columns.find(`${itemSelector}.${namespace}-selected`).last().siblings().filter(function () {
-              return new RegExp('^' + escapeRegex(buffer), 'iv').test($(this).text().trim());
-            });
-            const elem = matching.first();
-            elem[0]?.scrollIntoView({
-              block: 'nearest'
-            });
-            elem.trigger('click');
+          if (!('metaKey' in ev) && !('altKey' in ev)) {
+            if (key.length === 1) {
+              checkLastPressed(key);
+              const matching = $columns.find(`${itemSelector}.${namespace}-selected`).last().siblings().filter(function () {
+                return new RegExp('^' + escapeRegex(buffer), 'iv').test($(this).text().trim());
+              });
+              const elem = matching.first();
+              elem[0]?.scrollIntoView({
+                block: 'nearest'
+              });
+              elem.trigger('click');
+            }
+            moved = true;
           }
-          moved = true;
           break;
       }
 

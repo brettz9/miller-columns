@@ -1,5 +1,9 @@
 # miller-columns
 
+## 0.13.1
+
+- fix: prevent selection of text when meta/cmd or alt/option keys are in use
+
 ## 0.13.0
 
 - feat: rename `resetOnOutsideClick` to `outsideClickBehavior` and add behaviors
