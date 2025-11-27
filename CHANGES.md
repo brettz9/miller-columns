@@ -1,5 +1,9 @@
 # miller-columns
 
+## 0.13.2
+
+- fix: bad meta/cmd and alt/option key detection
+
 ## 0.13.1
 
 - fix: prevent selection of text when meta/cmd or alt/option keys are in use

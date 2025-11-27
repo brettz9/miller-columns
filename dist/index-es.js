@@ -397,7 +397,7 @@ async function addMillerColumnPlugin($, {
 
   /**
    * @callback MillerColumnsKeyPress
-   * @param {Event} e
+   * @param {KeyboardEvent} e
    * @returns {void}
    */
 
@@ -448,7 +448,7 @@ async function addMillerColumnPlugin($, {
           moved = true;
           break;
         default:
-          if (!('metaKey' in ev) && !('altKey' in ev)) {
+          if (!ev.metaKey && !ev.altKey) {
             if (key.length === 1) {
               checkLastPressed(key);
               const matching = $columns.find(`${itemSelector}.${namespace}-selected`).last().siblings().filter(function () {

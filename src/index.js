@@ -251,7 +251,7 @@ async function addMillerColumnPlugin ($, {namespace = 'miller', stylesheets = ['
 
   /**
    * @callback MillerColumnsKeyPress
-   * @param {Event} e
+   * @param {KeyboardEvent} e
    * @returns {void}
    */
 
@@ -276,6 +276,7 @@ async function addMillerColumnPlugin ($, {namespace = 'miller', stylesheets = ['
       }
       lastTime = currTime;
     }
+
     return function keypress (ev) {
       // eslint-disable-next-line prefer-destructuring -- TS
       const key = /** @type {Event & {key: string}} */ (ev).key;
@@ -303,7 +304,7 @@ async function addMillerColumnPlugin ($, {namespace = 'miller', stylesheets = ['
         moved = true;
         break;
       default:
-        if (!('metaKey' in ev) && !('altKey' in ev)) {
+        if (!ev.metaKey && !ev.altKey) {
           if (key.length === 1) {
             checkLastPressed(key);
             const matching = $columns.find(`${itemSelector}.${namespace}-selected`).last().siblings().filter(function () {
