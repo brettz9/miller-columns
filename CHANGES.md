@@ -1,5 +1,9 @@
 # miller-columns
 
+## 0.14.0
+
+- feat: add `refreshChildren`
+
 ## 0.13.2
 
 - fix: bad meta/cmd and alt/option key detection

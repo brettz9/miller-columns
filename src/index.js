@@ -116,13 +116,13 @@ async function addMillerColumnPlugin ($, {namespace = 'miller', stylesheets = ['
     while (queue.length) {
       $node = /** @type {JQuery<HTMLElement>} */ (queue.shift());
 
-      $node.children(itemSelector).each(function (item, el) {
+      $node.children(itemSelector).each(function () {
         const $this = $(this);
-        const $child = $this.children(columnSelector),
-          $ancestor = $this.parent().parent();
+        const $child = $this.children(columnSelector);
+        const $ancestor = $this.parent().parent();
 
         // Retain item hierarchy (because it is lost after flattening).
-        // Only set ancestor if it's actually a list item (not the root container)
+        // Only set ancestor if it's actually a list item and not already set
         // eslint-disable-next-line eqeqeq, no-eq-null -- Check either without duplication
         if ($ancestor.length && $ancestor.is(itemSelector) && ($this.data(`${namespace}-ancestor`) == null)) {
           // Use addBack to reset all selection chains.
@@ -263,6 +263,7 @@ async function addMillerColumnPlugin ($, {namespace = 'miller', stylesheets = ['
     let buffer = '';
     /** @type {number} */
     let lastTime;
+
     /**
      * @param {string} key
      * @returns {void}
@@ -307,9 +308,14 @@ async function addMillerColumnPlugin ($, {namespace = 'miller', stylesheets = ['
         if (!ev.metaKey && !ev.altKey) {
           if (key.length === 1) {
             checkLastPressed(key);
-            const matching = $columns.find(`${itemSelector}.${namespace}-selected`).last().siblings().filter(function () {
-              return new RegExp('^' + escapeRegex(buffer), 'iv').test($(this).text().trim());
-            });
+            const matching = $columns.
+              find(`${itemSelector}.${namespace}-selected`).
+              last().
+              siblings().
+              filter(function () {
+                return new RegExp('^' + escapeRegex(buffer), 'iv').
+                  test($(this).text().trim());
+              });
             const elem = matching.first();
             elem[0]?.scrollIntoView({block: 'nearest'});
             elem.trigger('click');
@@ -336,8 +342,8 @@ async function addMillerColumnPlugin ($, {namespace = 'miller', stylesheets = ['
   $.fn.millerColumns = function (options) {
     /** @type {Settings} */
     const defaults = {
-      current ($item) { /* */ },
-      reset ($columns) { /* */ },
+      current ($item) { /* noop */ },
+      reset ($columns) { /* noop */ },
       preview: null,
       breadcrumb,
       animation,
@@ -371,12 +377,17 @@ async function addMillerColumnPlugin ($, {namespace = 'miller', stylesheets = ['
 
         if ($child) {
           $child[0]?.scrollIntoView({block: 'nearest'});
-          $child.removeClass(`${namespace}-collapse`).children().removeClass(`${namespace}-selected`);
+          $child.removeClass(`${namespace}-collapse`).
+            children().
+            removeClass(`${namespace}-selected`);
         }
 
-        // Reveal (uncollapse) all ancestors to the clicked item.
+        // Reveal all ancestors
         while ($ancestor) {
-          $ancestor.addClass(`${namespace}-selected`).parent().removeClass(`${namespace}-collapse`);
+          $ancestor.
+            addClass(`${namespace}-selected`).
+            parent().
+            removeClass(`${namespace}-collapse`);
           $ancestor = $ancestor.data(`${namespace}-ancestor`);
         }
 
@@ -386,13 +397,13 @@ async function addMillerColumnPlugin ($, {namespace = 'miller', stylesheets = ['
 
         if (settings.preview) {
           const isFinalCol = $this.hasClass(`${namespace}-selected`) &&
-                        !$this.hasClass(`${namespace}-parent`);
+            !$this.hasClass(`${namespace}-parent`);
           if (isFinalCol) {
             const content = settings.preview.call(this, $this, $columns);
             $this.parent().parent().append(
               `<ul class="${namespace}-column ${namespace}-preview">
-                                <li>${content}</li>
-                            </ul>`
+                <li>${content}</li>
+              </ul>`
             );
           }
         }
@@ -403,6 +414,7 @@ async function addMillerColumnPlugin ($, {namespace = 'miller', stylesheets = ['
       });
 
       $columns[0].addEventListener('keydown', keypressHandler);
+
       $columns.on('click', (e) => {
         switch (settings.outsideClickBehavior) {
         case 'reset':
@@ -411,15 +423,12 @@ async function addMillerColumnPlugin ($, {namespace = 'miller', stylesheets = ['
         case 'select-parent': {
           const caretPosition = document.caretPositionFromPoint(e.clientX, e.clientY);
           const node = caretPosition?.offsetNode;
-          let elem = /** @type {Element|null} */ (
-            node?.nodeType === 1 ? node : node?.parentElement
-          );
-
+          let elem = /** @type {Element|null} */ (node?.nodeType === 1 ? node : node?.parentElement);
           while (elem) {
-            if (elem.matches('ul.miller-column:not(.miller-collapse)')) {
+            if (elem.matches(`ul.${namespace}-column:not(.${namespace}-collapse)`)) {
               $(elem).prevAll(
-                'ul.miller-column:not(.miller-collapse)'
-              ).first().find('li.miller-selected').trigger('click');
+                `ul.${namespace}-column:not(.${namespace}-collapse)`
+              ).first().find(`li.${namespace}-selected`).trigger('click');
               break;
             }
             elem = elem.parentElement;
@@ -514,17 +523,37 @@ async function addMillerColumnPlugin ($, {namespace = 'miller', stylesheets = ['
     };
 
     /**
-     * Destroy the miller columns instance and restore original structure.
-     * Removes all event handlers, data attributes, and CSS classes added by the plugin.
-     *
-     * @returns {JQuery<HTMLElement>} The columns element with original structure restored
+     * Rebuild children for a parent item after external changes.
+     * @param {JQuery<HTMLLIElement>} $parent
+     * @param {(string|JQuery<HTMLLIElement>)[]} newItems
+     * @returns {JQuery<HTMLLIElement>}
+     */
+    $result.refreshChildren = function ($parent, newItems) {
+      if (!$parent || !$parent.length) {
+        return $parent;
+      }
+      const $existing = $parent.data(`${namespace}-child`);
+      if ($existing && $existing.length) {
+        $existing.remove();
+        $parent.removeData(`${namespace}-child`).removeClass(`${namespace}-parent`);
+      }
+      const $liItems = newItems.map((it) => (typeof it === 'string' ? $(it) : it));
+      const $newList = $('<ul>').append($liItems);
+      $parent.append($newList);
+      unnest($result, $newList);
+      $parent.trigger('click');
+      return $parent;
+    };
+
+    /**
+     * Destroy and restore original structure.
+     * @returns {JQuery<HTMLElement>}
      */
     $result.destroy = function () {
       const $columns = $result;
 
       $columns.each(function () {
         const $col = $(this);
-
         // Remove keydown event listener
         const keypressHandler = $col.data(`${namespace}-keypress-handler`);
         if (keypressHandler) {
@@ -561,15 +590,16 @@ async function addMillerColumnPlugin ($, {namespace = 'miller', stylesheets = ['
         $col.removeData(`${namespace}-keypress-handler`);
       });
 
-      // Remove the addItem and destroy methods
       delete $result.addItem;
       delete $result.destroy;
+      delete $result.refreshChildren;
 
       return $result;
     };
 
     return $result;
   };
+
   return $;
 }
 
