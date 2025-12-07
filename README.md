@@ -123,7 +123,12 @@ been loaded.
     entire newly expanded item. Defaults to an internal method. Passed the
     column item and columns jQuery objects as arguments.
 - `breadcrumb` - Optional callback for adding the breadcrumb path using the
-    chain of selected items. Defaults to an internal method. No arguments.
+    chain of selected items. Defaults to an internal method. Optionally passed
+    the columns jQuery object as an argument.
+- `breadcrumbRoot` - Optional string that defines the text to display as the
+    root link at the start of the breadcrumb path. Clicking this link resets
+    the column browser. Set to an empty string to disable the root link.
+    Defaults to `"Root"`.
 - `current` - Optional callback; defaults to a noop. Called upon selection.
     Passed the column item and columns jQuery object as arguments.
 - `reset` - Optional callback; defaults to a noop. Called upon reset (by

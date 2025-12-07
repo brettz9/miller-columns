@@ -1,5 +1,10 @@
 # miller-columns
 
+## 0.15.0
+
+- feat: add `breadcrumbRoot` to define a clickable breadcrumb entry leading back to root
+- feat: add styling to breadcrumbs
+
 ## 0.14.0
 
 - feat: add `refreshChildren`
