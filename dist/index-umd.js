@@ -160,7 +160,8 @@
    * @typedef {{
    *   delay: JQuery.Duration | string,
    *   outsideClickBehavior: "reset"|"select-parent"|"none",
-   *   breadcrumb: () => void,
+   *   breadcrumbRoot: string,
+   *   breadcrumb: (this: HTMLElement, $columns?: JQuery<HTMLElement>) => void,
    *   current: (li: JQuery<HTMLLIElement>, $columns: JQuery<HTMLElement>) => void,
    *   preview: null|((li: JQuery<HTMLLIElement>, $columns: JQuery<HTMLElement>) => void),
    *   animation: (li: JQuery<HTMLLIElement>, $columns: JQuery<HTMLElement>) => void,
@@ -210,10 +211,21 @@
 
     /**
      * Add the breadcrumb path using the chain of selected items.
+     * @param {JQuery<HTMLElement>} [$columns] - Optional columns element for root link
      * @returns {void}
      */
-    function breadcrumb() {
+    function breadcrumb($columns) {
       const $breadcrumb = $(`.${namespace}-breadcrumbs`).empty();
+
+      // Add root link if breadcrumbRoot option is set
+      if (settings.breadcrumbRoot) {
+        $(`<span class="${namespace}-breadcrumb ${namespace}-breadcrumb-root">`).text(settings.breadcrumbRoot).on('click', function () {
+          if ($columns) {
+            reset($columns);
+            scrollIntoView($columns);
+          }
+        }).appendTo($breadcrumb);
+      }
       chain().each(function () {
         const $crumb = $(this);
         $(`<span class="${namespace}-breadcrumb">`).text($crumb.text().trim()).on('click', function () {
@@ -327,7 +339,7 @@
     function reset($columns) {
       collapse();
       chain().removeClass(`${namespace}-selected`);
-      breadcrumb();
+      breadcrumb($columns);
 
       // Upon reset ensure no value is returned to the calling code.
       settings.reset($columns);
@@ -492,6 +504,7 @@
         current($item) {/* noop */},
         reset($columns) {/* noop */},
         preview: null,
+        breadcrumbRoot: 'Root',
         breadcrumb,
         animation,
         delay: 500,
@@ -506,6 +519,7 @@
         $columns.data(`${namespace}-original-html`, originalHTML);
         unnest($columns);
         collapse();
+        breadcrumb($columns); // Initialize breadcrumbs with Root link
 
         // Store keypress handler for later removal
         const keypressHandler = getKeyPress($columns);
@@ -530,7 +544,7 @@
             $ancestor = $ancestor.data(`${namespace}-ancestor`);
           }
           settings.animation.call(this, $this, $columns);
-          settings.breadcrumb.call(this);
+          settings.breadcrumb.call(this, $columns);
           settings.current.call(this, $this, $columns);
           if (settings.preview) {
             const isFinalCol = $this.hasClass(`${namespace}-selected`) && !$this.hasClass(`${namespace}-parent`);
