@@ -137,7 +137,7 @@ been loaded.
 - `preview` - Optional callback; defaults to `null`. Passed the column
     item and columns jQuery object as arguments. The return result should be
     an HTML string which is used to fill the list item which functions as the
-    preview pane when selected a final item (an item without children).
+    preview pane when selecting a final item (an item without children).
 - `delay` - Optional integer indicating animation delay. Defaults to 500ms.
 - `outsideClickBehavior` - Optionally set to "reset" to have the
     column browser reset to the beginning upon clicking within the columns
