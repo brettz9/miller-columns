@@ -6,6 +6,7 @@ export type Settings = {
     breadcrumb: (this: HTMLElement, $columns?: JQuery<HTMLElement>) => void;
     current: (li: JQuery<HTMLLIElement>, $columns: JQuery<HTMLElement>) => void;
     preview: null | ((li: JQuery<HTMLLIElement>, $columns: JQuery<HTMLElement>) => void);
+    onPreview: null | ((ev: JQuery.ClickEvent<HTMLUListElement, undefined, HTMLUListElement, HTMLUListElement>, li: JQuery<HTMLUListElement>, $columns: JQuery<HTMLElement>) => void);
     animation: (li: JQuery<HTMLLIElement>, $columns: JQuery<HTMLElement>) => void;
     reset: ($columns: JQuery<HTMLElement>) => void;
     scroll?: ($column: JQuery<HTMLElement> | null, $columns: JQuery<HTMLElement>) => void;

@@ -16,6 +16,11 @@ import loadStylesheets from 'load-stylesheets';
  *   breadcrumb: (this: HTMLElement, $columns?: JQuery<HTMLElement>) => void,
  *   current: (li: JQuery<HTMLLIElement>, $columns: JQuery<HTMLElement>) => void,
  *   preview: null|((li: JQuery<HTMLLIElement>, $columns: JQuery<HTMLElement>) => void),
+ *   onPreview: null|((
+ *     ev: JQuery.ClickEvent<HTMLUListElement, undefined, HTMLUListElement, HTMLUListElement>,
+ *     li: JQuery<HTMLUListElement>,
+ *     $columns: JQuery<HTMLElement>
+ *   ) => void),
  *   animation: (li: JQuery<HTMLLIElement>, $columns: JQuery<HTMLElement>) => void,
  *   reset: ($columns: JQuery<HTMLElement>) => void,
  *   scroll?: ($column: JQuery<HTMLElement>|null, $columns: JQuery<HTMLElement>) => void
@@ -359,6 +364,7 @@ async function addMillerColumnPlugin ($, {namespace = 'miller', stylesheets = ['
       current ($item) { /* noop */ },
       reset ($columns) { /* noop */ },
       preview: null,
+      onPreview: null,
       breadcrumbRoot: 'Root',
       breadcrumb,
       animation,
@@ -416,11 +422,20 @@ async function addMillerColumnPlugin ($, {namespace = 'miller', stylesheets = ['
             !$this.hasClass(`${namespace}-parent`);
           if (isFinalCol) {
             const content = settings.preview.call(this, $this, $columns);
-            $this.parent().parent().append(
-              `<ul class="${namespace}-column ${namespace}-preview">
+            const ul = /** @type {JQuery<HTMLUListElement>} */ (
+              $(`<ul class="${namespace}-column ${namespace}-preview">
                 <li>${content}</li>
-              </ul>`
+              </ul>`)
             );
+            $this.parent().parent().append(ul);
+            ul[0].scrollIntoView({
+              block: 'nearest',
+              inline: 'start'
+            });
+            ul.on('click', (e) => {
+              e.stopPropagation();
+              settings.onPreview?.call(this, e, ul, $columns);
+            });
           }
         }
 

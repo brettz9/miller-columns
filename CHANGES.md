@@ -1,5 +1,10 @@
 # miller-columns
 
+## 0.16.0
+
+- fix: scroll preview pane into view upon selection
+- feat: `onPreview` callback
+
 ## 0.15.0
 
 - feat: add `breadcrumbRoot` to define a clickable breadcrumb entry leading back to root
