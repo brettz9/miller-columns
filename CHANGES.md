@@ -1,5 +1,9 @@
 # miller-columns
 
+## 0.17.0
+
+- feat: pass `resetByUser` boolean as second argument to `reset` callback
+
 ## 0.16.0
 
 - fix: scroll preview pane into view upon selection

@@ -9,8 +9,8 @@ const $columns = $('div.miller-columns').millerColumns({
   current ($item, $cols) {
     console.log('User selected:', $item);
   },
-  reset ($cols) {
-    console.log('Reset called');
+  reset ($cols, resetByUser) {
+    console.log('Reset called', 'reset by user:', resetByUser);
   },
   preview ($item) {
     return 'Preview: ' + $item.text();

@@ -22,7 +22,7 @@ import loadStylesheets from 'load-stylesheets';
  *     $columns: JQuery<HTMLElement>
  *   ) => void),
  *   animation: (li: JQuery<HTMLLIElement>, $columns: JQuery<HTMLElement>) => void,
- *   reset: ($columns: JQuery<HTMLElement>) => void,
+ *   reset: ($columns: JQuery<HTMLElement>, resetByUser: boolean) => void,
  *   scroll?: ($column: JQuery<HTMLElement>|null, $columns: JQuery<HTMLElement>) => void
  * }} Settings
  */
@@ -77,8 +77,7 @@ async function addMillerColumnPlugin ($, {namespace = 'miller', stylesheets = ['
         text(settings.breadcrumbRoot).
         on('click', function () {
           if ($columns) {
-            reset($columns);
-            scrollIntoView($columns);
+            userReset($columns);
           }
         }).appendTo($breadcrumb);
     }
@@ -188,7 +187,7 @@ async function addMillerColumnPlugin ($, {namespace = 'miller', stylesheets = ['
    * @returns {void}
    */
   function userReset ($columns) {
-    reset($columns);
+    reset($columns, true);
     scrollIntoView($columns);
   }
 
@@ -196,15 +195,16 @@ async function addMillerColumnPlugin ($, {namespace = 'miller', stylesheets = ['
    * Hide columns (not the first), remove selections, update breadcrumb.
    *
    * @param {JQuery<HTMLElement>} $columns
+   * @param {boolean} resetByUser
    * @returns {void}
    */
-  function reset ($columns) {
+  function reset ($columns, resetByUser) {
     collapse();
     chain().removeClass(`${namespace}-selected`);
     breadcrumb($columns);
 
     // Upon reset ensure no value is returned to the calling code.
-    settings.reset($columns);
+    settings.reset($columns, resetByUser);
     if (settings.preview) {
       $(`.${namespace}-preview`).remove();
     }
@@ -392,7 +392,7 @@ async function addMillerColumnPlugin ($, {namespace = 'miller', stylesheets = ['
       // Use event delegation to handle dynamically added items
       $columns.on('click', itemSelector, function (ev) {
         const $this = $(this);
-        reset($columns);
+        reset($columns, false);
 
         const $child = $this.data(`${namespace}-child`);
         let $ancestor = $this;
