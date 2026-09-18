@@ -1,6 +1,7 @@
 {
   "compilerOptions": {
     "lib": ["es2024", "DOM"],
+    "types": ["jquery"],
     "moduleResolution": "NodeNext",
     "module": "NodeNext",
     "allowJs": true,

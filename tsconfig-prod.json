@@ -1,16 +1,9 @@
 {
+  "extends": "./tsconfig.json",
   "compilerOptions": {
-    "lib": ["es2024", "DOM"],
-    "moduleResolution": "NodeNext",
-    "module": "NodeNext",
-    "allowJs": true,
-    "checkJs": true,
     "noEmit": false,
     "emitDeclarationOnly": true,
     "declaration": true,
-    "strict": true,
-    "skipLibCheck": true,
-    "target": "es2024",
     "outDir": "dist",
     "declarationDir": "dist",
     "rootDir": "src"
@@ -18,6 +11,5 @@
   "include": [
     "src/**/*.js",
     "src/**/*.ts"
-  ],
-  "exclude": ["node_modules"]
+  ]
 }

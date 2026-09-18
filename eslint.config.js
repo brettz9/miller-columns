@@ -40,7 +40,10 @@ export default [
   {
     rules: {
       // Disable for now
-      '@stylistic/max-len': 0
+      '@stylistic/max-len': 0,
+
+      // jQuery
+      'unicorn/no-this-outside-of-class': 0
     }
   }
 ];

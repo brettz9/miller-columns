@@ -38,11 +38,11 @@ function escapeRegex (s) {
 }
 
 /**
- * @param {jQuery} $
+ * @param {typeof jQuery} $
  * @param {object} cfg
  * @param {string} [cfg.namespace]
  * @param {Exclude<import('load-stylesheets').Stylesheets, string>} [cfg.stylesheets]
- * @returns {Promise<jQuery>}
+ * @returns {Promise<typeof jQuery>}
  */
 async function addMillerColumnPlugin ($, {namespace = 'miller', stylesheets = ['@default']} = {}) {
   /** @type {Settings} */
@@ -125,14 +125,10 @@ async function addMillerColumnPlugin ($, {namespace = 'miller', stylesheets = ['
    * @returns {void}
    */
   function unnest ($columns, $startNode) {
-    const queue = [];
-    let $node;
-
-    // Push the root unordered list item into the queue.
-    queue.push($startNode || $columns.children());
+    const queue = [$startNode || $columns.children()];
 
     while (queue.length) {
-      $node = /** @type {JQuery<HTMLElement>} */ (queue.shift());
+      const $node = /** @type {JQuery<HTMLElement>} */ (queue.shift());
 
       $node.children(itemSelector).each(function () {
         const $this = $(this);
@@ -241,7 +237,7 @@ async function addMillerColumnPlugin ($, {namespace = 'miller', stylesheets = ['
 
     // If current item has children and they are visible, but we're at root level,
     // do nothing - we're already on the parent and just expanded it
-    if ($child && !$child.hasClass(`${namespace}-collapse`) && !$ancestor) {
+    if ($child && !$ancestor && !$child.hasClass(`${namespace}-collapse`)) {
       return;
     }
 
@@ -528,9 +524,6 @@ async function addMillerColumnPlugin ($, {namespace = 'miller', stylesheets = ['
 
           // The new list needs to be processed by unnest to become a column
           unnest($columns, $childList);
-
-          // After unnesting, get the updated reference to the child list
-          $childList = $parent.data(`${namespace}-child`);
         } else {
           // Parent already has children - $childList is already a column
           // Just append the new item directly to it

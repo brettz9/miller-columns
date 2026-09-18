@@ -54,7 +54,7 @@ setTimeout(() => {
   console.log('Adding child to existing item...');
   // Find the "First 2" item and add a child to it
   const $parent = /** @type {JQuery<HTMLLIElement>} */ ($('.miller-column li').filter(function () {
-    return $(this).text().trim().startsWith('First 2');
+    return $(this).text().trimStart().startsWith('First 2');
   }).first());
 
   if ($parent.length && $columns.addItem) {

@@ -1,4 +1,9 @@
-export default addMillerColumnPlugin;
+/**
+ * MIT License.
+ *
+ * @copyright 2014 White Magic Software, Inc.
+ * @copyright 2018 Brett Zamir
+ */
 export type Settings = {
     delay: JQuery.Duration | string;
     outsideClickBehavior: "reset" | "select-parent" | "none";
@@ -11,15 +16,19 @@ export type Settings = {
     reset: ($columns: JQuery<HTMLElement>, resetByUser: boolean) => void;
     scroll?: ($column: JQuery<HTMLElement> | null, $columns: JQuery<HTMLElement>) => void;
 };
-export type millerColumns = import("./millerColumns.ts").millerColumns;
 /**
- * @param {jQuery} $
+ * @param {typeof jQuery} $
  * @param {object} cfg
  * @param {string} [cfg.namespace]
  * @param {Exclude<import('load-stylesheets').Stylesheets, string>} [cfg.stylesheets]
- * @returns {Promise<jQuery>}
+ * @returns {Promise<typeof jQuery>}
  */
-declare function addMillerColumnPlugin($: JQueryStatic, { namespace, stylesheets }?: {
-    namespace?: string | undefined;
-    stylesheets?: (string | [stylesheetURL: string, options: import("load-stylesheets").Options])[] | undefined;
-}): Promise<JQueryStatic>;
+declare function addMillerColumnPlugin($: typeof jQuery, { namespace, stylesheets }?: {
+    namespace?: string;
+    stylesheets?: Exclude<import('load-stylesheets').Stylesheets, string>;
+}): Promise<typeof jQuery>;
+export type millerColumns = import('./millerColumns.ts').millerColumns;
+/**
+ * @typedef {import('./millerColumns.ts').millerColumns} millerColumns
+ */
+export default addMillerColumnPlugin;
