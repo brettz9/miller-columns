@@ -10,7 +10,7 @@ export type Settings = {
     breadcrumbRoot: string;
     breadcrumb: (this: HTMLElement, $columns?: JQuery<HTMLElement>) => void;
     current: (li: JQuery<HTMLLIElement>, $columns: JQuery<HTMLElement>) => void;
-    preview: null | ((li: JQuery<HTMLLIElement>, $columns: JQuery<HTMLElement>) => void);
+    preview: null | ((li: JQuery<HTMLLIElement>, $columns: JQuery<HTMLElement>) => string | HTMLElement);
     onPreview: null | ((ev: JQuery.ClickEvent<HTMLUListElement, undefined, HTMLUListElement, HTMLUListElement>, li: JQuery<HTMLUListElement>, $columns: JQuery<HTMLElement>) => void);
     animation: (li: JQuery<HTMLLIElement>, $columns: JQuery<HTMLElement>) => void;
     reset: ($columns: JQuery<HTMLElement>, resetByUser: boolean) => void;

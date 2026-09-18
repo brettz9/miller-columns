@@ -1,5 +1,9 @@
 # miller-columns
 
+## 0.18.1
+
+- fix: avoid all jQuery innerHTML APIs
+
 ## 0.18.0
 
 - fix: restore original DOM via node cloning (avoiding innerHTML)

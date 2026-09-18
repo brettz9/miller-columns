@@ -15,7 +15,7 @@ import loadStylesheets from 'load-stylesheets';
  *   breadcrumbRoot: string,
  *   breadcrumb: (this: HTMLElement, $columns?: JQuery<HTMLElement>) => void,
  *   current: (li: JQuery<HTMLLIElement>, $columns: JQuery<HTMLElement>) => void,
- *   preview: null|((li: JQuery<HTMLLIElement>, $columns: JQuery<HTMLElement>) => void),
+ *   preview: null|((li: JQuery<HTMLLIElement>, $columns: JQuery<HTMLElement>) => string|HTMLElement),
  *   onPreview: null|((
  *     ev: JQuery.ClickEvent<HTMLUListElement, undefined, HTMLUListElement, HTMLUListElement>,
  *     li: JQuery<HTMLUListElement>,
@@ -73,7 +73,9 @@ async function addMillerColumnPlugin ($, {namespace = 'miller', stylesheets = ['
 
     // Add root link if breadcrumbRoot option is set
     if (settings.breadcrumbRoot) {
-      $(`<span class="${namespace}-breadcrumb ${namespace}-breadcrumb-root">`).
+      const span = document.createElement('span');
+      span.className = `${namespace}-breadcrumb ${namespace}-breadcrumb-root`;
+      $(span).
         text(settings.breadcrumbRoot).
         on('click', function () {
           if ($columns) {
@@ -84,7 +86,9 @@ async function addMillerColumnPlugin ($, {namespace = 'miller', stylesheets = ['
 
     chain().each(function () {
       const $crumb = $(this);
-      $(`<span class="${namespace}-breadcrumb">`).
+      const span = document.createElement('span');
+      span.className = `${namespace}-breadcrumb`;
+      $(span).
         text($crumb.text().trim()).
         on('click', function () {
           $crumb.trigger('click');
@@ -423,10 +427,14 @@ async function addMillerColumnPlugin ($, {namespace = 'miller', stylesheets = ['
             !$this.hasClass(`${namespace}-parent`);
           if (isFinalCol) {
             const content = settings.preview.call(this, $this, $columns);
+            const ulBase = document.createElement('ul');
+            ulBase.className = `${namespace}-column ${namespace}-preview`;
+            const li = document.createElement('li');
+            li.append(content);
+            ulBase.append(li);
+
             const ul = /** @type {JQuery<HTMLUListElement>} */ (
-              $(`<ul class="${namespace}-column ${namespace}-preview">
-                <li>${content}</li>
-              </ul>`)
+              $(ulBase)
             );
             $this.parent().parent().append(ul);
             ul[0].scrollIntoView({
@@ -510,7 +518,7 @@ async function addMillerColumnPlugin ($, {namespace = 'miller', stylesheets = ['
           }
         } else {
           // No columns exist yet, create initial structure
-          const $tempWrapper = $('<ul>').append($item);
+          const $tempWrapper = $(document.createElement('ul')).append($item);
           $columns.append($tempWrapper);
           unnest($columns, $tempWrapper);
         }
@@ -520,7 +528,7 @@ async function addMillerColumnPlugin ($, {namespace = 'miller', stylesheets = ['
 
         if (!$childList) {
           // Parent doesn't have children yet, create a new list with the item
-          $childList = $('<ul>').append($item);
+          $childList = $(document.createElement('ul')).append($item);
           $parent.append($childList);
           $parent.data(`${namespace}-child`, $childList).addClass(`${namespace}-parent`);
 
@@ -567,7 +575,7 @@ async function addMillerColumnPlugin ($, {namespace = 'miller', stylesheets = ['
         $parent.removeData(`${namespace}-child`).removeClass(`${namespace}-parent`);
       }
       const $liItems = newItems.map((it) => (typeof it === 'string' ? $(it) : it));
-      const $newList = $('<ul>').append($liItems);
+      const $newList = $(document.createElement('ul')).append($liItems);
       $parent.append($newList);
       unnest($result, $newList);
       $parent.trigger('click');
