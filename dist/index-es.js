@@ -249,6 +249,11 @@ async function addMillerColumnPlugin($, {
       // Why isn't this working when we instead use this `last` on the `animate` above?
       const last = $columns.find(`.${namespace}-column:not(.${namespace}-collapse)`).last();
       // last[0].scrollIntoView(); // Scrolls vertically also unfortunately
+      if (!last.length) {
+        // The plugin may have been destroyed (or the columns otherwise
+        // reset) while this animation's timer was still pending.
+        return;
+      }
       last[0].scrollLeft = width;
       if (settings.scroll) {
         settings.scroll.call(this, $column, $columns);
@@ -509,9 +514,9 @@ async function addMillerColumnPlugin($, {
     const $result = this.each(function () {
       const $columns = $(this);
 
-      // Store original HTML for restoration
-      const originalHTML = $columns.html();
-      $columns.data(`${namespace}-original-html`, originalHTML);
+      // Store original DOM structure for restoration
+      const $originalContents = $columns.contents().clone(true, true);
+      $columns.data(`${namespace}-original-contents`, $originalContents);
       unnest($columns);
       collapse();
       breadcrumb($columns); // Initialize breadcrumbs with Root link
@@ -694,6 +699,11 @@ async function addMillerColumnPlugin($, {
       const $columns = $result;
       $columns.each(function () {
         const $col = $(this);
+
+        // Cancel any in-flight scroll animation so its completion callback
+        // doesn't fire against the DOM after it has been reset below.
+        $col.stop(true, false);
+
         // Remove keydown event listener
         const keypressHandler = $col.data(`${namespace}-keypress-handler`);
         if (keypressHandler) {
@@ -720,11 +730,11 @@ async function addMillerColumnPlugin($, {
         // Remove preview columns
         $col.find(`.${namespace}-preview`).remove();
 
-        // Restore original HTML structure
-        const originalHTML = $col.data(`${namespace}-original-html`);
-        if (originalHTML) {
-          $col.html(originalHTML);
-          $col.removeData(`${namespace}-original-html`);
+        // Restore original DOM structure
+        const $originalContents = $col.data(`${namespace}-original-contents`);
+        if ($originalContents) {
+          $col.empty().append($originalContents);
+          $col.removeData(`${namespace}-original-contents`);
         }
         $col.removeData(`${namespace}-keypress-handler`);
       });

@@ -1,5 +1,10 @@
 # miller-columns
 
+## 0.18.0
+
+- fix: restore original DOM via node cloning (avoiding innerHTML)
+- fix: harden destroy against races
+
 ## 0.17.0
 
 - feat: pass `resetByUser` boolean as second argument to `reset` callback
